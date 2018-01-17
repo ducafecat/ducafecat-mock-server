@@ -1,0 +1,21 @@
+{
+  "extends": "eslint-config-egg",
+  "rules": {
+    // 融合了 jquery 所以暂时屏蔽
+    "no-undef": 0, // 不允许未声明的变量
+    "no-unused-vars": [0, {"vars": "all", "args": "after-used"}], // 不允许有声明后未使用的变量或者参数
+    "no-tabs": 0, // 不允许tabs
+    "no-mixed-spaces-and-tabs": [0, "smart-tabs"], // 不允许混用tab和空格
+    "indent": [0, 4], // 缩进风格
+    "camelcase": [0, {"properties": "never"}], // 强制驼峰命名规则
+    "space-before-function-paren": [0, {"anonymous": "always", "named": "never"}], // 函数定义时括号前的空格
+    "no-trailing-spaces": 0, // 代码不能尾随空格
+    "quote-props": 0,
+
+    "arrow-parens": 0,
+    "no-extra-semi": 0,
+
+    "generator-star-spacing": 0,
+    "no-debugger": 0
+  }
+}
