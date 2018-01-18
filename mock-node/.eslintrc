@@ -11,6 +11,7 @@
     "space-before-function-paren": [0, {"anonymous": "always", "named": "never"}], // 函数定义时括号前的空格
     "no-trailing-spaces": 0, // 代码不能尾随空格
     "quote-props": 0,
+    "comma-dangle": 0,
 
     "arrow-parens": 0,
     "no-extra-semi": 0,

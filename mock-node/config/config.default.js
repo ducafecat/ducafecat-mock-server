@@ -9,5 +9,16 @@ module.exports = appInfo => {
   // add your config here
   config.middleware = [];
 
+  // 安全控制
+  config.security = {
+    // xframe: {
+    //   enable: false,
+    // },
+    csrf: {
+      // enable: false
+      ignore: '/mock'
+    },
+  };
+
   return config;
 };
