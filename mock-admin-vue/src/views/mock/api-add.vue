@@ -26,7 +26,9 @@
       <!-- response -->
       <span class="form-kind-text">response</span>
       <el-tabs type="border-card">
-        <el-tab-pane label="Body"></el-tab-pane>
+        <el-tab-pane label="Body">
+          <div id="jsoneditor" style="width: 100%; height: 400px;"></div>
+        </el-tab-pane>
         <el-tab-pane label="Cookies"></el-tab-pane>
         <el-tab-pane label="Headers"></el-tab-pane>
       </el-tabs>
@@ -35,10 +37,14 @@
 </template>
 
 <script>
+  import JSONEditor from 'jsoneditor'
+  import 'jsoneditor/dist/jsoneditor.css'
+
   export default {
     name: 'mock-add',
     data() {
       return {
+        chk_mockjs: false,
         form: {
           name: '',
           desc: ''
@@ -55,6 +61,24 @@
           type: 'warning'
         })
       }
+    },
+    // 挂载结束
+    mounted: function() {
+      var container = document.getElementById("jsoneditor");
+      var options = {
+        mode: 'code'
+      };
+      var editor = new JSONEditor(container, options);
+      // set json
+      var json = {
+          "Array": [1, 2, 3],
+          "Boolean": true,
+          "Null": null,
+          "Number": 123,
+          "Object": {"a": "b", "c": "d"},
+          "String": "Hello World"
+      };
+      editor.set(json);
     }
   }
 </script>
