@@ -9,8 +9,8 @@
         <b-collapse is-nav id="nav_collapse">
 
             <b-navbar-nav>
-            <b-nav-item to="/mock/projects">项目</b-nav-item>
-            <b-nav-item href="#">关于</b-nav-item>
+                <b-nav-item to="/mock/projects">项目</b-nav-item>
+                <b-nav-item href="#">关于</b-nav-item>
             </b-navbar-nav>
 
             <!-- Right aligned nav items -->

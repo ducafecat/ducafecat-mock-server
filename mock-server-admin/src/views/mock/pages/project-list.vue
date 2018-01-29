@@ -11,7 +11,7 @@
             <p class="card-text">
                 院内课程研发管控
             </p>
-            <b-button href="#" variant="primary">进入</b-button>
+            <b-button to="/mock/projects/100/apis" variant="primary">进入</b-button>
             </b-card>
         </b-col>
         <b-col md="6" sm="12" style="margin-top: 10px;" >

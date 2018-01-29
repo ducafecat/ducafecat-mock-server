@@ -1,4 +1,5 @@
 let projectList = () => import('./../pages/project-list')
+let apiList = () => import('./../pages/api-list')
 
 export default [
   {
@@ -8,5 +9,9 @@ export default [
   {
     path: 'mock/projects',
     component: projectList
+  },
+  {
+    path: 'mock/projects/:id/apis',
+    component: apiList
   }
 ]
