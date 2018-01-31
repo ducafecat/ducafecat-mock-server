@@ -13,7 +13,7 @@
       <b-button variant="success" @click="handleShowApiAddModal">添加接口</b-button>
     </div>
 
-    <div class="tbHeader" v-b-toggle="'collapse1'">3.1-菜单</div>
+    <div class="tbHeader" v-b-toggle="'collapse1'">3.1-菜单 ~ /menus</div>
     <b-collapse id="collapse1" visible class="tbBody">
       <b-table striped hover :items="items"></b-table>
     </b-collapse>

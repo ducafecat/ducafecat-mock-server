@@ -2,11 +2,17 @@
   <table class="table table-striped table-hover">
   <thead>
     <tr>
+      <th>
+        <input type="checkbox" v-model="chkAll" @click="handleChkAll">
+      </th>
       <th scope="col" v-for="(column, index) in columns" :field="'th-'+index">{{column.label}}</th>
     </tr>
   </thead>
   <tbody>
     <tr v-for="(item, row) in items" :field="'tr-'+row">
+      <th>
+        <input type="checkbox" v-model="items[row].isChecked">
+      </th>
       <td v-for="(column, col) in columns" :field="'tr-'+row+'-td-'+col">
         <template v-if="item.isEdit && editIndex.row === row && editIndex.field === column.field">
           <input
@@ -30,8 +36,20 @@
 export default {
   name: "ducafe-bs-table",
   props: ['columns', 'items'],
+  computed: {
+    // isCheckedAll() {
+    //   let finds = this.items.filter( item => {
+    //     return item.isChecked
+    //   })
+    //   if (finds) {
+    //     return finds.length === this.items.length ? true : false
+    //   }
+    //   return false
+    // }
+  },
   data() {
     return {
+      chkAll: false,
       editIndex: {
         row: -1,
         field: ''
@@ -46,8 +64,8 @@ export default {
     },
     // 数据发生变化
     handleCellEditChange(event, row , field, rowData) {
-      let oldValue = event.currentTarget._value
       let newValue = event.currentTarget.value
+      let oldValue = event.currentTarget._value
       this.tableEditClear()
       this.$emit('cell-edit-done',
         {
@@ -63,6 +81,12 @@ export default {
     tableEditClear() {
       this.editIndex.row = -1
       this.editIndex.field = ''
+    },
+    // 全选
+    handleChkAll() {
+      for(let i = 0 ; i < this.items.length; i++) {
+        this.items[i].isChecked = !this.chkAll
+      }
     }
   },
   directives: {

@@ -1,34 +1,45 @@
 <template>
   <div>
-    <b-card header="input" header-tag="header" no-body>
+    <b-card header="request" header-tag="header" no-body>
       <b-tabs card>
         <!--基础-->
         <b-tab title="base" active>
-          <b-form-group label="Method" label-for="input-base-method">
-            <b-form-select v-model="form.input.base.method" :options="methodOptions" required/>
+          <b-form-group label="Method" label-for="request-base-method">
+            <b-form-select v-model="form.request.base.method" :options="methodOptions" required/>
           </b-form-group>
-          <b-form-group label="URL" label-for="input-base-url">
+          <b-form-group label="URL" label-for="request-base-url">
             <b-input-group prepend="/">
-              <b-form-input id="input-base-url" v-model="form.input.base.url" required></b-form-input>
+              <b-form-input id="request-base-url" v-model="form.request.base.url" required></b-form-input>
             </b-input-group>
           </b-form-group>
-          <b-form-group label="Description" label-for="input-base-description">
-            <b-form-textarea id="input-base-description" v-model="form.input.base.description" :rows="3"
+          <b-form-group label="Description" label-for="request-base-description">
+            <b-form-textarea id="request-base-description" v-model="form.request.base.description" :rows="3"
                              :max-rows="6"></b-form-textarea>
           </b-form-group>
         </b-tab>
+        <!--基础 end-->
         <!--参数-->
         <b-tab title="Parameters">
-          <ducafe-bs-table :items="tableData" :columns="columns" @cell-edit-done="handleCellDone"></ducafe-bs-table>
+          <ducafe-bs-table
+            :items="form.request.parameters.data"
+            :columns="form.request.parameters.columns"
+            @cell-edit-done="handleParametersCellEditDone"></ducafe-bs-table>
+          <b-button-group size="sm">
+           <b-button>add</b-button>
+           <b-button>delete</b-button>
+          </b-button-group>
         </b-tab>
+        <!--参数 end-->
         <!--http headers-->
         <b-tab title="Headers">
           <br>Disabled tab!
         </b-tab>
+        <!--http headers end-->
         <!--Body主体-->
         <b-tab title="Body">
           <br>Disabled tab!
         </b-tab>
+        <!--Body主体 end-->
       </b-tabs>
     </b-card>
     <b-button type="submit" variant="primary">save</b-button>
@@ -37,6 +48,7 @@
 
 <script>
   import DucafeBsTable from '@/components/ducafe-bs-table'
+  import ConstAPI from '@/apis/const'
 
   export default {
     name: 'project-add',
@@ -45,70 +57,58 @@
     },
     data() {
       return {
-        methodOptions: [
-          {value: 'get', text: 'get'},
-          {value: 'post', text: 'post'},
-          {value: 'delete', text: 'delete'},
-          {value: 'put', text: 'put'},
-          {value: 'patch', text: 'patch'}
-        ],
+        methodOptions: ConstAPI.httpMethods(),
         form: {
-          input: {
+          // 输入
+          request: {
             base: {
               method: 'get',
               url: '',
               description: ''
+            },
+            parameters: {
+              data: [
+                {key: 'token1', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', must: 'yes', isEdit: true, isChecked: false},
+                {key: 'token2', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', must: 'yes', isEdit: true, isChecked: false}
+              ],
+              columns: [
+                {
+                  field: 'key',
+                  label: 'key'
+                },
+                {
+                  field: 'value',
+                  label: 'value'
+                },
+                {
+                  field: 'description',
+                  label: 'description'
+                },
+                {
+                  field: 'type',
+                  label: 'type'
+                },
+                {
+                  field: 'must',
+                  label: 'must'
+                }
+              ]
             }
+          },
+          // 输出
+          response: {
+
           }
         },
-
-        tableEditIndex: {
-          row: -1
-        },
-        tableData: [
-          {key: 'token1', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
-          {key: 'token2', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'number', isEdit: true},
-          {key: 'token3', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
-          {key: 'token4', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
-          {key: 'token5', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
-          {key: 'token6', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true}
-        ],
-        columns: [
-          {
-            field: 'key',
-            label: 'key'
-          },
-          {
-            field: 'value',
-            label: 'value'
-          },
-          {
-            field: 'description',
-            label: 'description'
-          }
-        ]
-
       }
     },
     methods: {
 
-      // 表格编辑
-      handleCellDone(data) {
-        this.tableEditIndex.row = data.index
-        // this.tableData[data.index]['isEditing'] = true
-      },
-      handleCellEditCancel(data) {
-        this.tableEditIndex.row = data.index
-        // this.tableData[data.index]['isEditing'] = false
-      },
-      tableCancelAllEditing() {
-        this.tableEditIndex.row = -1
-      },
-
-      // 单元格编辑回调
-      cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.tableData[rowIndex][field] = newValue
+      // Parameters 单元格编辑完成
+      handleParametersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
+        this.form.request.parameters.data[rowIndex][field] = newValue
       }
+
     }
   }
 </script>
