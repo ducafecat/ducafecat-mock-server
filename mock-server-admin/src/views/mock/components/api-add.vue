@@ -1,5 +1,5 @@
 <template>
-  <b-form>
+  <div>
     <b-card header="input" header-tag="header" no-body>
       <b-tabs card>
         <!--基础-->
@@ -18,13 +18,8 @@
           </b-form-group>
         </b-tab>
         <!--参数-->
-        <b-tab title="Params">
-          <b-table striped hover :items="tableData" :fields="columns">
-            <template slot="key" slot-scope="data">
-              <div @click="handleCellCanEdit(data)" v-if="!data.item.isEditing">{{data.item.key}}</div>
-              <input v-model="tableData[data.index].key" v-if="data.item.isEditing" @blur="handleCellCancelEdit(data)"></input>
-            </template>
-          </b-table>
+        <b-tab title="Parameters">
+          <ducafe-bs-table :items="tableData" :columns="columns" @cell-edit-done="handleCellDone"></ducafe-bs-table>
         </b-tab>
         <!--http headers-->
         <b-tab title="Headers">
@@ -37,13 +32,17 @@
       </b-tabs>
     </b-card>
     <b-button type="submit" variant="primary">save</b-button>
-  </b-form>
+  </div>
 </template>
 
 <script>
+  import DucafeBsTable from '@/components/ducafe-bs-table'
+
   export default {
     name: 'project-add',
-    components: {},
+    components: {
+      DucafeBsTable
+    },
     data() {
       return {
         methodOptions: [
@@ -62,43 +61,49 @@
             }
           }
         },
+
+        tableEditIndex: {
+          row: -1
+        },
         tableData: [
-          {key: 'token1', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', isEditing: false},
-          {key: 'token2', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', isEditing: false},
-          {key: 'token3', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', isEditing: false},
-          {key: 'token4', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', isEditing: false},
-          {key: 'token5', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', isEditing: false},
-          {key: 'token6', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', isEditing: false}
+          {key: 'token1', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
+          {key: 'token2', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'number', isEdit: true},
+          {key: 'token3', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
+          {key: 'token4', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
+          {key: 'token5', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true},
+          {key: 'token6', value: 'fsdfxcvasdfsdfewrweds', description: 'aaaaaaabbbbbbbccccccc', type:'string', isEdit: true}
         ],
         columns: [
           {
-            key: 'key',
+            field: 'key',
             label: 'key'
           },
           {
-            key: 'value',
+            field: 'value',
             label: 'value'
           },
           {
-            key: 'description',
+            field: 'description',
             label: 'description'
           }
         ]
+
       }
     },
     methods: {
 
-      // 点击单元格可以编辑
-      handleCellCanEdit(data) {
-        this.tableData[data.index]['isEditing'] = true
+      // 表格编辑
+      handleCellDone(data) {
+        this.tableEditIndex.row = data.index
+        // this.tableData[data.index]['isEditing'] = true
       },
-      // 取消编辑状态
-      handleCellCancelEdit(data) {
-        this.tableData[data.index]['isEditing'] = false
+      handleCellEditCancel(data) {
+        this.tableEditIndex.row = data.index
+        // this.tableData[data.index]['isEditing'] = false
       },
       tableCancelAllEditing() {
-        this.tableData = this.tableData.forEach()
-      }
+        this.tableEditIndex.row = -1
+      },
 
       // 单元格编辑回调
       cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
