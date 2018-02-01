@@ -5,23 +5,23 @@
       <th>
         <input type="checkbox" v-model="chkAll" @click="handleChkAll">
       </th>
-      <th scope="col" v-for="(column, index) in columns" :field="'th-'+index">{{column.label}}</th>
+      <th scope="col" v-for="(column, index) in columns" :key="'th-'+index">{{column.label}}</th>
     </tr>
   </thead>
   <tbody>
-    <tr v-for="(item, row) in items" :field="'tr-'+row">
+    <tr v-for="(item, row) in items" :key="'tr-'+row">
       <th>
         <input type="checkbox" v-model="items[row].isChecked">
       </th>
-      <td v-for="(column, col) in columns" :field="'tr-'+row+'-td-'+col">
+      <td v-for="(column, col) in columns" :key="'tr-'+row+'-td-'+col">
         <template v-if="item.isEdit && editIndex.row === row && editIndex.field === column.field">
           <input
             v-focus
             style="width:100%"
-            :name='column.field'
+            :name="column.field"
             v-model.lazy="items[row][column.field]"
             @change="handleCellEditChange($event, row, column.field, item)"
-            @blur="tableEditClear" ></input>
+            @blur="tableEditClear"></input>
         </template>
         <template v-else>
           <div @click="handleCellEdit(row, column.field)" >{{item[column.field]}}</div>
@@ -35,7 +35,7 @@
 <script>
 export default {
   name: "ducafe-bs-table",
-  props: ['columns', 'items'],
+  props: ["columns", "items"],
   computed: {
     // isCheckedAll() {
     //   let finds = this.items.filter( item => {
@@ -52,52 +52,51 @@ export default {
       chkAll: false,
       editIndex: {
         row: -1,
-        field: ''
+        field: ""
       }
-    }
+    };
   },
   methods: {
     // 表格编辑
-    handleCellEdit(row ,field) {
-      this.editIndex.row = row
-      this.editIndex.field = field
+    handleCellEdit(row, field) {
+      this.editIndex.row = row;
+      this.editIndex.field = field;
     },
     // 数据发生变化
-    handleCellEditChange(event, row , field, rowData) {
-      let newValue = event.currentTarget.value
-      let oldValue = event.currentTarget._value
-      this.tableEditClear()
-      this.$emit('cell-edit-done',
-        {
-          newValue: newValue,
-          oldValue: oldValue,
-          rowIndex: row,
-          rowData: rowData,
-          field: field
-        }
-      )
+    handleCellEditChange(event, rowIndex, field, rowData) {
+      let newValue = event.currentTarget.value;
+      let oldValue = event.currentTarget._value;
+      this.tableEditClear();
+      this.$emit("cell-edit-done", 
+        newValue,
+        oldValue,
+        rowIndex,
+        rowData,
+        field
+      );
     },
     // 清除编辑状态
     tableEditClear() {
-      this.editIndex.row = -1
-      this.editIndex.field = ''
+      this.editIndex.row = -1;
+      this.editIndex.field = "";
     },
     // 全选
     handleChkAll() {
-      for(let i = 0 ; i < this.items.length; i++) {
-        this.items[i].isChecked = !this.chkAll
+      for (let i = 0; i < this.items.length; i++) {
+        this.items[i].isChecked = !this.chkAll;
       }
     }
   },
   directives: {
     focus: {
-        inserted: function (el, {value}) {
-            el.focus()
-        }
+      inserted: function(el, { value }) {
+        el.focus();
+      }
     }
   }
-}
+};
 </script>
 
 <style scoped>
+
 </style>
