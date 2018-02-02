@@ -9,7 +9,7 @@
       </p>
     </b-card>
     <div style="text-align:right;width:100%;margin-top:10px;margin-bottom:10px;">
-      <b-button variant="success" @click="handleShowAddModal">添加分组</b-button>
+      <b-button variant="success" @click="handleShowGroupAddModal">添加分组</b-button>
       <b-button variant="success" @click="handleShowApiAddModal">添加接口</b-button>
     </div>
 
@@ -25,10 +25,11 @@
 </template>
 
 <script>
-  import projectAdd from './../components/project-add'
   import apiAdd from './../components/api-add'
+  import apiGroupAdd from './../components/api-group-add'
+
   const items = [
-    {isActive: true, age: 40, first_name: "Dickerson", last_name: "Macdonald"},
+    {method: 'get', url: '/users/', description: "Dickerson", last_name: "Macdonald"},
     {isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw"},
     {isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson"},
     {isActive: true, age: 38, first_name: "Jami", last_name: "Carney"}
@@ -37,12 +38,12 @@
   export default {
     name: 'dashboard',
     components: {
-      projectAdd, apiAdd
+      apiGroupAdd, apiAdd
     },
     data() {
       return {
         modal_title: '',
-        modal_component: 'projectAdd',
+        modal_component: '',
         items: items
       }
     },
@@ -52,12 +53,12 @@
         this.modal_component = 'apiAdd'
         this.$refs.modalRef.show()
       },
-      handleShowAddModal() {
-        this.modal_title = '项目信息'
-        this.modal_component = 'projectAdd'
+      handleShowGroupAddModal() {
+        this.modal_title = '分组信息'
+        this.modal_component = 'apiGroupAdd'
         this.$refs.modalRef.show()
       },
-      handleAdd() {
+      handleApiAddSave() {
       },
       handleModalHidden() {
         this.modal_title = ''

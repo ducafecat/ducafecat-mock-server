@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- request -->
     <b-card header="request" header-tag="header" no-body>
       <b-tabs card>
         <!--基础-->
@@ -13,7 +14,7 @@
             </b-input-group>
           </b-form-group>
           <b-form-group label="Description" label-for="request-base-description">
-            <b-form-textarea id="request-base-description" v-model="form.request.base.description" :rows="3"
+            <b-form-textarea id="request-base-description" v-model="form.request.base.description" :rows="1"
                              :max-rows="6"></b-form-textarea>
           </b-form-group>
         </b-tab>
@@ -21,14 +22,14 @@
         <!--参数-->
         <b-tab title="Parameters">
           <KVEditer
-            :items="form.request.parameters.data"
+            :items="form.request.parameters"
             @cell-edit-done="handleParametersCellEditDone"></KVEditer>
         </b-tab>
         <!--参数 end-->
         <!--http headers-->
         <b-tab title="Headers">
           <KVEditer
-            :items="form.request.headers.data"
+            :items="form.request.headers"
             @cell-edit-done="handleHeadersCellEditDone"></KVEditer>
         </b-tab>
         <!--http headers end-->
@@ -47,15 +48,31 @@
           <KVEditer
             :items="form.request.body.kvData" v-if="form.request.body.type === '1' || form.request.body.type === '2'"
             @cell-edit-done="handleBodyRawKVCellEditDone"></KVEditer>
-          <editor v-if="form.request.body.type === '3'" v-model="form.request.body.rawData" @init="editorInit();" lang="json" theme="chrome" width="100%" height="500"></editor>
-          <!-- <div id="jsoneditor" style="width: 400px; height: 400px;"></div> -->
-          <!-- <JsonEditer v-if="form.request.body.type === '3'" 
-            v-model="form.request.body.rawData" showBtns="false" @json-change="handleRequestRawDataJsonChange" ></JsonEditer> -->
+          <editor v-if="form.request.body.type === '3'" v-model="form.request.body.rawData" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
         </b-tab>
         <!--Body主体 end-->
       </b-tabs>
     </b-card>
-    <b-button type="submit" variant="primary">save</b-button>
+    <!-- request end -->
+    <!-- response -->
+    <b-card header="response" header-tag="header" no-body style="margin-top:10px;">
+      <b-tabs card>
+        <!--Body主体-->
+        <b-tab title="Body">
+          <editor v-model="form.response.body" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
+        </b-tab>
+        <!--Body主体 end-->
+        <!--http headers-->
+        <b-tab title="Headers">
+          <KVEditer
+            :items="form.response.headers"
+            @cell-edit-done="handleResponseHeadersCellEditDone"></KVEditer>
+        </b-tab>
+        <!--http headers end-->
+      </b-tabs>
+    </b-card>
+    <!-- response end -->
+    <b-button type="submit" variant="primary" style="margin-top:10px;">save</b-button>
   </div>
 </template>
 
@@ -83,41 +100,19 @@ export default {
             url: "",
             description: ""
           },
-          parameters: {
-            data: [
-              {
-                key: "token1",
-                value: "fsdfxcvasdfsdfewrweds",
-                description: "aaaaaaabbbbbbbccccccc",
-                type: "string",
-                must: "yes",
-                isEdit: true,
-                isChecked: false
-              }
-            ]
-          },
-          headers: {
-            data: [
-              {
-                key: "uid",
-                value: "123456",
-                description: "desc",
-                type: "string",
-                must: "yes",
-                isEdit: true,
-                isChecked: false
-              }
-            ]
-          },
+          parameters: [],
+          headers: [],
           body: {
             type: '1',
             kvData: [],
             rawType: '1',
-            rawData: 'demo'
+            rawData: ''
           }
         },
         // 输出
         response: {
+          body: '',
+          headers: []
         }
       }
     };
@@ -125,22 +120,22 @@ export default {
   methods: {
 
     editorInit:function () {
-        require('vue2-ace-editor/node_modules/brace/mode/html');
-        require('vue2-ace-editor/node_modules/brace/mode/javascript');
-        require('vue2-ace-editor/node_modules/brace/mode/less');
-        require('vue2-ace-editor/node_modules/brace/mode/json');
-        require('vue2-ace-editor/node_modules/brace/mode/xml');
-        require('vue2-ace-editor/node_modules/brace/theme/chrome');
+      require('vue2-ace-editor/node_modules/brace/mode/html');
+      require('vue2-ace-editor/node_modules/brace/mode/javascript');
+      require('vue2-ace-editor/node_modules/brace/mode/less');
+      require('vue2-ace-editor/node_modules/brace/mode/json');
+      require('vue2-ace-editor/node_modules/brace/mode/xml');
+      require('vue2-ace-editor/node_modules/brace/theme/chrome');
     },
 
     //////////////////////////////////////////////////////
     // request - 参数 - 单元格编辑完成
     handleParametersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-      this.form.request.parameters.data[rowIndex][field] = newValue;
+      this.form.request.parameters[rowIndex][field] = newValue;
     },
     // request - headers - 单元格编辑完成
     handleHeadersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-      this.form.request.headers.data[rowIndex][field] = newValue;
+      this.form.request.headers[rowIndex][field] = newValue;
     },
     // request - body raw - 单元格编辑完成
     handleBodyRawKVCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
@@ -149,6 +144,10 @@ export default {
     // request - body raw - json 编辑器修改完成
     handleRequestRawDataJsonChange(value) {
       his.form.request.body.rawData = value
+    },
+    // response - headers - 单元格编辑完成
+    handleResponseHeadersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
+      this.form.response.headers[rowIndex][field] = newValue;
     }
     //////////////////////////////////////////////////////
   },
