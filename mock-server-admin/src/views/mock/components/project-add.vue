@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: 'project-add',
+  name: 'cp-project-add',
   data() {
     return {
         form: {

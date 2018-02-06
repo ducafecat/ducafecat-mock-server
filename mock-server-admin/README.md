@@ -2,6 +2,25 @@
 
 > A Vue.js project
 
+## todo list
+
+- 框架
+
+* [] busy状态
+* [] 信息提示
+* [] 用户授权、注销
+* [] 动态位置
+
+- 业务
+
+* [] 项目CURD
+* [] 接口CURD
+* [] 动态路由模拟数据
+* [] 支持mock.js
+* [] 查看项目gitbook手册
+* [] 下载项目gitbook格式包
+* [] 多用户支持
+
 ## Build Setup
 
 ``` bash

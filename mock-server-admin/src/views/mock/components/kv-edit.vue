@@ -1,7 +1,7 @@
 <template>
   <div>
     <ducafe-bs-table :items="items" :columns="form.columns" @cell-edit-done="handleCellEditDone"></ducafe-bs-table>
-    <b-button-group size="sm">
+    <b-button-group size="sm" class="float-right">
       <b-button @click="handleAdd">add</b-button>
       <b-button @click="handleDelete">delete</b-button>
     </b-button-group>
@@ -11,7 +11,7 @@
 <script>
 import DucafeBsTable from "@/components/ducafe-bs-table";
 export default {
-  name: "kv-edit",
+  name: "cp-kv-edit",
   components: {
     DucafeBsTable
   },
@@ -23,23 +23,23 @@ export default {
       form: {
         columns: [
             {
-                field: "key",
+                key: "key",
                 label: "key"
             },
             {
-                field: "value",
+                key: "value",
                 label: "value"
             },
             {
-                field: "description",
+                key: "description",
                 label: "description"
             },
             {
-                field: "type",
+                key: "type",
                 label: "type"
             },
             {
-                field: "must",
+                key: "must",
                 label: "must"
             }
         ]

@@ -1,78 +1,85 @@
 <template>
   <div>
-    <!-- request -->
-    <b-card header="request" header-tag="header" no-body>
-      <b-tabs card>
-        <!--基础-->
-        <b-tab title="base" active>
-          <b-form-group label="Method" label-for="request-base-method">
-            <b-form-select v-model="form.request.base.method" :options="methodOptions" required/>
-          </b-form-group>
-          <b-form-group label="URL" label-for="request-base-url">
-            <b-input-group prepend="/">
-              <b-form-input id="request-base-url" v-model="form.request.base.url" required></b-form-input>
-            </b-input-group>
-          </b-form-group>
-          <b-form-group label="Description" label-for="request-base-description">
-            <b-form-textarea id="request-base-description" v-model="form.request.base.description" :rows="1"
-                             :max-rows="6"></b-form-textarea>
-          </b-form-group>
+    <b-card no-body>
+      <b-tabs small pills card>
+        <b-tab title="request" class="sTab" active>
+          <!-- request -->
+          <b-tabs small card>
+            <!--基础-->
+            <b-tab title="base" active>
+              <b-form-group label-size="sm" label="Method" label-for="request-base-method">
+                <b-form-select size="sm" v-model="form.request.base.method" :options="methodOptions" required/>
+              </b-form-group>
+              <b-form-group label-size="sm" label="URL" label-for="request-base-url">
+                <b-input-group size="sm" prepend="/">
+                  <b-form-input size="sm" id="request-base-url" v-model="form.request.base.url" required></b-form-input>
+                </b-input-group>
+              </b-form-group>
+              <b-form-group label-size="sm" label="Description" label-for="request-base-description">
+                <b-form-textarea size="sm" id="request-base-description" v-model="form.request.base.description" :rows="2"
+                                :max-rows="6"></b-form-textarea>
+              </b-form-group>
+            </b-tab>
+            <!--基础 end-->
+            <!--参数-->
+            <b-tab title="Parameters" class="sTab">
+              <KVEditer
+                :items="form.request.parameters"
+                @cell-edit-done="handleParametersCellEditDone"></KVEditer>
+            </b-tab>
+            <!--参数 end-->
+            <!--http headers-->
+            <b-tab title="Headers" class="sTab">
+              <KVEditer
+                :items="form.request.headers"
+                @cell-edit-done="handleHeadersCellEditDone"></KVEditer>
+            </b-tab>
+            <!--http headers end-->
+            <!--Body主体-->
+            <b-tab title="Body" class="sTab">
+              <b-form-group label-size="sm">
+                <b-form-radio-group size="sm" v-model="form.request.body.type"
+                                    :options="bodyTypeOptions"
+                                    name="radioBodyTypeInline">
+                </b-form-radio-group>
+              </b-form-group>
+              <KVEditer
+                :items="form.request.body.kvData" v-if="form.request.body.type === '1' || form.request.body.type === '2'"
+                @cell-edit-done="handleBodyRawKVCellEditDone"></KVEditer>
+              <editor v-if="form.request.body.type === '3'" v-model="form.request.body.rawData" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
+              <b-form-group label-size="sm" label="format" horizontal :label-cols="1"
+                v-if="form.request.body.type === '3'">
+                <b-form-select size="sm" v-model="form.request.body.rawType" :options="rawTypeOptions" style="width:100px"  />
+                <b-button size="sm" class="btnSM float-right" @click="handleAdd">格式化JSON</b-button>
+              </b-form-group>
+            </b-tab>
+            <!--Body主体 end-->
+          </b-tabs>
+          <!-- request end -->
         </b-tab>
-        <!--基础 end-->
-        <!--参数-->
-        <b-tab title="Parameters">
-          <KVEditer
-            :items="form.request.parameters"
-            @cell-edit-done="handleParametersCellEditDone"></KVEditer>
+        <b-tab title="response" class="sTab">
+          <!-- response -->
+          <b-tabs small card>
+            <!--Body主体-->
+            <b-tab title="Body" class="sTab">
+              <editor v-model="form.response.body" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
+              <b-button size="sm" class="btnSM float-right" @click="handleAdd">格式化JSON</b-button>
+            </b-tab>
+            <!--Body主体 end-->
+            <!--http headers-->
+            <b-tab title="Headers" class="sTab">
+              <KVEditer
+                :items="form.response.headers"
+                @cell-edit-done="handleResponseHeadersCellEditDone"></KVEditer>
+            </b-tab>
+            <!--http headers end-->
+          </b-tabs>
+          <!-- response end -->
         </b-tab>
-        <!--参数 end-->
-        <!--http headers-->
-        <b-tab title="Headers">
-          <KVEditer
-            :items="form.request.headers"
-            @cell-edit-done="handleHeadersCellEditDone"></KVEditer>
-        </b-tab>
-        <!--http headers end-->
-        <!--Body主体-->
-        <b-tab title="Body">
-          <b-form-group >
-            <b-form-radio-group v-model="form.request.body.type"
-                                :options="bodyTypeOptions"
-                                name="radioBodyTypeInline">
-            </b-form-radio-group>
-          </b-form-group>
-          <b-form-group label="format" horizontal :label-cols="1"
-            v-if="form.request.body.type === '3'">
-            <b-form-select v-model="form.request.body.rawType" :options="rawTypeOptions" style="width:100px" />
-          </b-form-group>
-          <KVEditer
-            :items="form.request.body.kvData" v-if="form.request.body.type === '1' || form.request.body.type === '2'"
-            @cell-edit-done="handleBodyRawKVCellEditDone"></KVEditer>
-          <editor v-if="form.request.body.type === '3'" v-model="form.request.body.rawData" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
-        </b-tab>
-        <!--Body主体 end-->
       </b-tabs>
     </b-card>
-    <!-- request end -->
-    <!-- response -->
-    <b-card header="response" header-tag="header" no-body style="margin-top:10px;">
-      <b-tabs card>
-        <!--Body主体-->
-        <b-tab title="Body">
-          <editor v-model="form.response.body" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
-        </b-tab>
-        <!--Body主体 end-->
-        <!--http headers-->
-        <b-tab title="Headers">
-          <KVEditer
-            :items="form.response.headers"
-            @cell-edit-done="handleResponseHeadersCellEditDone"></KVEditer>
-        </b-tab>
-        <!--http headers end-->
-      </b-tabs>
-    </b-card>
-    <!-- response end -->
-    <b-button type="submit" variant="primary" style="margin-top:10px;">save</b-button>
+
+    <b-button type="submit" @click="handleSave" variant="primary" style="margin-top:10px;">save</b-button>
   </div>
 </template>
 
@@ -82,39 +89,40 @@ import KVEditer from "./kv-edit";
 import ConstAPI from "@/apis/const";
 
 export default {
-  name: "project-add",
+  name: "cp-project-add",
   components: {
     KVEditer,
     editor: require('vue2-ace-editor')
   },
+  props: ['form'],
   data() {
     return {
       methodOptions: ConstAPI.httpMethods(),
       bodyTypeOptions: ConstAPI.httpBodyTypes(),
       rawTypeOptions: ConstAPI.httpBodyRawTypes(),
-      form: {
-        // 输入
-        request: {
-          base: {
-            method: "get",
-            url: "",
-            description: ""
-          },
-          parameters: [],
-          headers: [],
-          body: {
-            type: '1',
-            kvData: [],
-            rawType: '1',
-            rawData: ''
-          }
-        },
-        // 输出
-        response: {
-          body: '',
-          headers: []
-        }
-      }
+      // form: {
+      //   // 输入
+      //   request: {
+      //     base: {
+      //       method: "get",
+      //       url: "",
+      //       description: ""
+      //     },
+      //     parameters: [],
+      //     headers: [],
+      //     body: {
+      //       type: '1',
+      //       kvData: [],
+      //       rawType: '1',
+      //       rawData: ''
+      //     }
+      //   },
+      //   // 输出
+      //   response: {
+      //     body: '',
+      //     headers: []
+      //   }
+      // }
     };
   },
   methods: {
@@ -126,6 +134,10 @@ export default {
       require('vue2-ace-editor/node_modules/brace/mode/json');
       require('vue2-ace-editor/node_modules/brace/mode/xml');
       require('vue2-ace-editor/node_modules/brace/theme/chrome');
+    },
+
+    handleSave() {
+      this.$emit('data-save', { name: 'api-add' ,data: this.form })
     },
 
     //////////////////////////////////////////////////////
@@ -179,5 +191,13 @@ export default {
 .cell-edit-color {
   color: #2db7f5;
   font-weight: bold;
+}
+.btnSM {
+  margin:5px;
+  padding:2px;
+  font-size:9px;
+}
+.sTab {
+  padding:1px;
 }
 </style>

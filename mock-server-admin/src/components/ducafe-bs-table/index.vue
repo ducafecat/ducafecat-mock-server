@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-striped table-hover">
+  <table class="table small table-striped table-hover">
   <thead>
     <tr>
       <th>

@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'api-group-add',
+  name: 'cp-api-group-add',
   data() {
     return {
         form: {

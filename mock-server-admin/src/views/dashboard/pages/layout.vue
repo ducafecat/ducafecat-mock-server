@@ -42,6 +42,7 @@
         </b-navbar>
         <main role="main" class="container">
             <b-breadcrumb :items="breadcrumb" />
+            <b-alert variant="success" show dismissible>分组信息添加成功</b-alert>
             <router-view></router-view>
         </main>
     </div>
