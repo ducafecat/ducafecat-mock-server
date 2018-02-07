@@ -67,20 +67,6 @@ export default {
   },
   data () {
     return {
-        // breadcrumb: [
-        //     {
-        //         text: "首页",
-        //         to: "/"
-        //     },
-        //     {
-        //         text: "项目",
-        //         to: "/mock/projects"
-        //     },
-        //     {
-        //         text: "列表",
-        //         active: true
-        //     }
-        // ]
     }
   },
   computed: {
@@ -106,9 +92,9 @@ export default {
                         })
                     }
                     nodes_path = []
+                    return isFind
                 }
                 nodes_path.pop()
-                return isFind
             }
         }
         if (this.currentRoute !== null) {
