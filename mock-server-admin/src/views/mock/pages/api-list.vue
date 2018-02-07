@@ -90,12 +90,14 @@
               type: '1',
               kvData: [],
               rawType: '1',
-              rawData: ''
+              rawData: '',
+              rawDataMD: ''
             }
           },
           // 输出
           response: {
             body: '{"data":""}',
+            bodyMD: '', 
             headers: []
           }
         }

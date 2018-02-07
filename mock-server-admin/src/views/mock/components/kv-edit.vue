@@ -23,23 +23,23 @@ export default {
       form: {
         columns: [
             {
-                key: "key",
+                field: "key",
                 label: "key"
             },
             {
-                key: "value",
+                field: "value",
                 label: "value"
             },
             {
-                key: "description",
+                field: "description",
                 label: "description"
             },
             {
-                key: "type",
+                field: "type",
                 label: "type"
             },
             {
-                key: "must",
+                field: "must",
                 label: "must"
             }
         ]

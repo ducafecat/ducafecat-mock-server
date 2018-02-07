@@ -37,21 +37,31 @@
             <!--http headers end-->
             <!--Body主体-->
             <b-tab title="Body" class="sTab">
-              <b-form-group label-size="sm">
+              <b-form-group label-size="sm" style="margin-bottom:0px;">
                 <b-form-radio-group size="sm" v-model="form.request.body.type"
                                     :options="bodyTypeOptions"
                                     name="radioBodyTypeInline">
                 </b-form-radio-group>
               </b-form-group>
+              <!-- form-data x-www-form-urlencoded -->
               <KVEditer
                 :items="form.request.body.kvData" v-if="form.request.body.type === '1' || form.request.body.type === '2'"
                 @cell-edit-done="handleBodyRawKVCellEditDone"></KVEditer>
-              <editor v-if="form.request.body.type === '3'" v-model="form.request.body.rawData" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
-              <b-form-group label-size="sm" label="format" horizontal :label-cols="1"
-                v-if="form.request.body.type === '3'">
-                <b-form-select size="sm" v-model="form.request.body.rawType" :options="rawTypeOptions" style="width:100px"  />
-                <b-button size="sm" class="btnSM float-right" @click="handleAdd">格式化JSON</b-button>
-              </b-form-group>
+              <!-- form-data x-www-form-urlencoded end -->
+              <!-- raw -->
+              <b-tabs v-if="form.request.body.type === '3'" small pills card>
+                <b-tab title="data" class="sTab" active>
+                  <editor v-model="form.request.body.rawData" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
+                  <b-form-group label-size="sm" label="format" horizontal :label-cols="1">
+                    <b-form-select size="sm" v-model="form.request.body.rawType" :options="rawTypeOptions" style="width:100px"  />
+                    <b-button size="sm" class="btnSM float-right" @click="handleFormatRequestJson">format=>JSON</b-button>
+                  </b-form-group>
+                </b-tab>
+                <b-tab title="readme" class="sTab">
+                  <editor v-model="form.request.body.rawDataMD" @init="editorInit();" lang="markdown" theme="chrome" width="100%" height="200"></editor>
+                </b-tab>
+              </b-tabs>
+              <!-- raw end -->
             </b-tab>
             <!--Body主体 end-->
           </b-tabs>
@@ -62,8 +72,15 @@
           <b-tabs small card>
             <!--Body主体-->
             <b-tab title="Body" class="sTab">
-              <editor v-model="form.response.body" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
-              <b-button size="sm" class="btnSM float-right" @click="handleAdd">格式化JSON</b-button>
+              <b-tabs small pills card>
+                <b-tab title="data" class="sTab" active>
+                  <editor v-model="form.response.body" @init="editorInit();" lang="json" theme="chrome" width="100%" height="200"></editor>
+                  <b-button size="sm" class="btnSM float-right" @click="handleFormatResponseJson">format=>JSON</b-button>
+                </b-tab>
+                <b-tab title="readme" class="sTab">
+                  <editor v-model="form.response.bodyMD" @init="editorInit();" lang="markdown" theme="chrome" width="100%" height="200"></editor>
+                </b-tab>
+              </b-tabs>
             </b-tab>
             <!--Body主体 end-->
             <!--http headers-->
@@ -87,6 +104,7 @@
 // import DucafeBsTable from "@/components/ducafe-bs-table";
 import KVEditer from "./kv-edit";
 import ConstAPI from "@/apis/const";
+import MixUtil from '@/utils/mix'
 
 export default {
   name: "cp-project-add",
@@ -133,6 +151,7 @@ export default {
       require('vue2-ace-editor/node_modules/brace/mode/less');
       require('vue2-ace-editor/node_modules/brace/mode/json');
       require('vue2-ace-editor/node_modules/brace/mode/xml');
+      require('vue2-ace-editor/node_modules/brace/mode/markdown');
       require('vue2-ace-editor/node_modules/brace/theme/chrome');
     },
 
@@ -155,12 +174,20 @@ export default {
     },
     // request - body raw - json 编辑器修改完成
     handleRequestRawDataJsonChange(value) {
-      his.form.request.body.rawData = value
+      this.form.request.body.rawData = value
+    },
+    // request - body raw - json 格式化
+    handleFormatRequestJson() {
+      this.form.request.body.rawData = MixUtil.formatJson(this.form.request.body.rawData)
     },
     // response - headers - 单元格编辑完成
     handleResponseHeadersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
       this.form.response.headers[rowIndex][field] = newValue;
-    }
+    },
+    // response - body raw - json 格式化
+    handleFormatResponseJson() {
+      this.form.response.body = MixUtil.formatJson(this.form.response.body)
+    },
     //////////////////////////////////////////////////////
   },
   // 挂载结束
