@@ -16,111 +16,123 @@
     <apiList :items="data_list" @event-api-add="handleShowApiAddModal"></apiList>
     <!-- API分组 end -->
 
-    <b-modal ref="modalRef" :title="modal_title" hide-footer @hidden="handleModalHidden" size="lg" >
+    <!-- 添加 api/分组 -->
+    <b-modal 
+      ref="modalRef" 
+      header-bg-variant="dark"
+      header-text-variant="light"
+      :title="modal_title" 
+      hide-footer 
+      @hidden="handleModalHidden" 
+      size="lg" >
       <component v-bind:is="modal_component" :form="form" @data-save="handleDataSave"></component>
     </b-modal>
+    <!-- 添加 api/分组 end -->
   </div>
 </template>
 
 <script>
-  import apiAdd from './../components/api-add'
-  import apiGroupAdd from './../components/api-group-add'
-  import apiList from './../components/api-list'
-  import MixUtil from '@/utils/mix'
+import pageMixin from '@/components/mixins/pageMixin'
+import MixUtil from '@/utils/mix'
+import apiAdd from './../components/api-add'
+import apiGroupAdd from './../components/api-group-add'
+import apiList from './../components/api-list'
 
-  const items = [
-    {method: 'get', url: '/users/', description: "Dickerson", last_name: "Macdonald"},
-    {isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw"},
-    {isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson"},
-    {isActive: true, age: 38, first_name: "Jami", last_name: "Carney"}
-  ]
+const items = [
+  {method: 'get', url: '/users/', description: "Dickerson", last_name: "Macdonald"},
+  {isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw"},
+  {isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson"},
+  {isActive: true, age: 38, first_name: "Jami", last_name: "Carney"}
+]
 
-  export default {
-    name: 'dashboard',
-    components: {
-      apiGroupAdd, apiAdd, apiList
-    },
-    data() {
-      return {
-        modal_title: '',
-        modal_component: '',
-        items: items,
-        form: '',
-        data_list: [
-          {
-            _id: 1232132132312,
-            gCode: 'menus',
-            gName: '3.1-菜单',
-            items: [
-              { method: 'get', url: '/menus/', description: "数据列表", _id: 1232132132312 },
-              { method: 'post', url: '/menus/', description: "数据添加", _id: 1232132132312 },
-              { method: 'put', url: '/menus/:id', description: "数据修改", _id: 1232132132312 },
-              { method: 'delete', url: '/menus/:id', description: "数据删除", _id: 1232132132312 }
-            ]
-          },
-          {
-            _id: 1232132132312,
-            gCode: 'menus2',
-            gName: '3.2-菜单',
-            items: [
-              { method: 'get', url: '/menus/', description: "数据列表", _id: 1232132132312 },
-              { method: 'post', url: '/menus/', description: "数据添加", _id: 1232132132312 },
-              { method: 'put', url: '/menus/:id', description: "数据修改", _id: 1232132132312 },
-              { method: 'delete', url: '/menus/:id', description: "数据删除", _id: 1232132132312 }
-            ]
-          }
-        ]
-      }
-    },
-    methods: {
-      handleShowApiAddModal() {
-        this.modal_title = '接口信息'
-        this.modal_component = 'apiAdd'
-        this.form = {
-          // 输入
-          request: {
-            base: {
-              method: "get",
-              url: "",
-              description: ""
-            },
-            parameters: [],
-            headers: [],
-            body: {
-              type: '1',
-              kvData: [],
-              rawType: '1',
-              rawData: '',
-              rawDataMD: ''
-            }
-          },
-          // 输出
-          response: {
-            body: '{"data":""}',
-            bodyMD: '', 
-            headers: []
-          }
+export default {
+  name: 'dashboard',
+  mixins: [pageMixin],
+  components: {
+    apiGroupAdd, apiAdd, apiList
+  },
+  data() {
+    return {
+      modal_title: '',
+      modal_component: '',
+      items: items,
+      form: '',
+      data_list: [
+        {
+          _id: 1232132132312,
+          gCode: 'menus',
+          gName: '3.1-菜单',
+          items: [
+            { method: 'get', url: '/menus/', description: "数据列表", _id: 1232132132312 },
+            { method: 'post', url: '/menus/', description: "数据添加", _id: 1232132132312 },
+            { method: 'put', url: '/menus/:id', description: "数据修改", _id: 1232132132312 },
+            { method: 'delete', url: '/menus/:id', description: "数据删除", _id: 1232132132312 }
+          ]
+        },
+        {
+          _id: 1232132132312,
+          gCode: 'menus2',
+          gName: '3.2-菜单',
+          items: [
+            { method: 'get', url: '/menus/', description: "数据列表", _id: 1232132132312 },
+            { method: 'post', url: '/menus/', description: "数据添加", _id: 1232132132312 },
+            { method: 'put', url: '/menus/:id', description: "数据修改", _id: 1232132132312 },
+            { method: 'delete', url: '/menus/:id', description: "数据删除", _id: 1232132132312 }
+          ]
         }
-        this.form.response.body = MixUtil.formatJson(this.form.response.body)
-        this.$refs.modalRef.show()
-      },
-      handleShowGroupAddModal() {
-        this.modal_title = '分组信息'
-        this.modal_component = 'apiGroupAdd'
-        this.$refs.modalRef.show()
-      },
-      handleApiAddSave() {
-      },
-      handleModalHidden() {
-        this.modal_title = ''
-        this.modal_component = ''
-      },
-      handleDataSave(data) {
-        console.log(data)
-        this.$refs.modalRef.hide()
+      ]
+    }
+  },
+  methods: {
+    handleShowApiAddModal() {
+      this.modal_title = '接口信息'
+      this.modal_component = 'apiAdd'
+      this.form = {
+        // 输入
+        request: {
+          base: {
+            method: "get",
+            url: "",
+            description: ""
+          },
+          parameters: [],
+          headers: [],
+          body: {
+            type: '1',
+            kvData: [],
+            rawType: '1',
+            rawData: '',
+            rawDataMD: ''
+          }
+        },
+        // 输出
+        response: {
+          body: '{"data":""}',
+          bodyMD: '', 
+          headers: []
+        }
       }
+      this.form.response.body = MixUtil.formatJson(this.form.response.body)
+      this.$refs.modalRef.show()
+    },
+    handleShowGroupAddModal() {
+      this.modal_title = '分组信息'
+      this.modal_component = 'apiGroupAdd'
+      this.$refs.modalRef.show()
+    },
+    handleApiAddSave() {
+    },
+    handleModalHidden() {
+      this.modal_title = ''
+      this.modal_component = ''
+    },
+    handleDataSave(data) {
+      console.log(data)
+      this.$refs.modalRef.hide()
+      this.successAlert('api接口添加成功')
     }
   }
+}
 </script>
 
 <style>

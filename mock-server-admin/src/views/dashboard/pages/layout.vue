@@ -42,15 +42,25 @@
         </b-navbar>
         <main role="main" class="container">
             <b-breadcrumb :items="breadcrumb" />
-            <b-alert variant="success" show dismissible>分组信息添加成功</b-alert>
+            <DucafeBsAlert 
+                v-if="alertDescription !== ''" 
+                :variant="alertVariant" 
+                :description="alertDescription"
+                @dismissed-done="clearAlert"></DucafeBsAlert>
             <router-view></router-view>
         </main>
     </div>
 </template>
 
 <script>
+import pageMixin from '@/components/mixins/pageMixin'
+import DucafeBsAlert from '@/components/ducafe-bs-alert'
 export default {
   name: 'layout',
+  mixins: [pageMixin],
+  components: {
+    DucafeBsAlert
+  },
   data () {
     return {
         breadcrumb: [
@@ -68,8 +78,6 @@ export default {
             }
         ]
     }
-  },
-  components: {
   },
   methods: {
   },

@@ -39,10 +39,12 @@
 </template>
 
 <script>
+import pageMixin from '@/components/mixins/pageMixin'
 import projectAdd from './../components/project-add'
 
 export default {
   name: "dashboard",
+  mixins: [pageMixin],
   components: {
       projectAdd
     },
