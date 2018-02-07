@@ -4,11 +4,6 @@ let apiList = () => import('./../pages/api-list')
 export default [
   {
     name: '项目',
-    path: '',
-    component: projectList
-  },
-  {
-    name: '项目',
     path: 'mock/projects',
     component: projectList
   },

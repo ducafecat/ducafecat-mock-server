@@ -85,29 +85,40 @@ export default {
   },
   computed: {
       breadcrumb () {
-          let paths = [{
-                text: "首页",
-                to: "/"
-            }]
-          if (this.currentRoute !== null) {
-              if (this.currentRoute.path !== '/') {
-                  paths = [
-                        {
-                            text: "首页",
-                            to: "/"
-                        },
-                        {
-                            text: this.currentRoute.name,
-                            to: this.currentRoute.path
-                        },
-                        {
-                            text: "列表",
-                            active: true
-                        }
-                    ]
-              }
-          }
-          return paths
+        let breadcrumb_list = []
+        let nodes_path = []
+        function parseNodes(nodes, find_id) {
+            for (let it of nodes) {
+                nodes_path.push(it)
+                let isFind = false
+                if (find_id === it.path) {
+                    isFind = true
+                }
+                if (it.childs != undefined && it.childs.length > 0 && !isFind) {
+                    isFind = parseNodes(it.childs, find_id)
+                } else {
+                }
+                if (isFind) {
+                    for (let item of nodes_path) {
+                        breadcrumb_list.push({
+                            text: item.name,
+                            to: item.path
+                        })
+                    }
+                    nodes_path = []
+                }
+                nodes_path.pop()
+                return isFind
+            }
+        }
+        if (this.currentRoute !== null) {
+            for (let item of this.currentRoute.matched) {
+                if (item.path !== '') {
+                    parseNodes(this.routeMaps, item.path)
+                }
+            }
+        }
+        return breadcrumb_list
       }
   },
   methods: {
