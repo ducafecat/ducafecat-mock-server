@@ -8,6 +8,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'currentRoute',
       'alertVariant',
       'alertDescription'
     ])

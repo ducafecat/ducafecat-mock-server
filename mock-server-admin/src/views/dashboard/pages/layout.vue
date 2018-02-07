@@ -41,12 +41,16 @@
         </b-collapse>
         </b-navbar>
         <main role="main" class="container">
+            <!-- 面包靴 -->
             <b-breadcrumb :items="breadcrumb" />
+            <!-- 面包靴 end -->
+            <!-- alert -->
             <DucafeBsAlert 
                 v-if="alertDescription !== ''" 
                 :variant="alertVariant" 
                 :description="alertDescription"
                 @dismissed-done="clearAlert"></DucafeBsAlert>
+            <!-- alert end -->
             <router-view></router-view>
         </main>
     </div>
@@ -63,21 +67,48 @@ export default {
   },
   data () {
     return {
-        breadcrumb: [
-            {
-            text: "Admin",
-            href: "#"
-            },
-            {
-            text: "Manage",
-            href: "#"
-            },
-            {
-            text: "Library",
-            active: true
-            }
-        ]
+        // breadcrumb: [
+        //     {
+        //         text: "首页",
+        //         to: "/"
+        //     },
+        //     {
+        //         text: "项目",
+        //         to: "/mock/projects"
+        //     },
+        //     {
+        //         text: "列表",
+        //         active: true
+        //     }
+        // ]
     }
+  },
+  computed: {
+      breadcrumb () {
+          let paths = [{
+                text: "首页",
+                to: "/"
+            }]
+          if (this.currentRoute !== null) {
+              if (this.currentRoute.path !== '/') {
+                  paths = [
+                        {
+                            text: "首页",
+                            to: "/"
+                        },
+                        {
+                            text: this.currentRoute.name,
+                            to: this.currentRoute.path
+                        },
+                        {
+                            text: "列表",
+                            active: true
+                        }
+                    ]
+              }
+          }
+          return paths
+      }
   },
   methods: {
   },
