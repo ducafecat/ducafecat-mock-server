@@ -13,7 +13,7 @@
     </div>
 
     <!-- API分组 -->
-    <apiList :items="data_list" @event-api-add="handleShowApiAddModal"></apiList>
+    <apiList :items="data_list" @event-api-add="handleShowApiAddFullView"></apiList>
     <!-- API分组 end -->
 
     <!-- 添加 api/分组 -->
@@ -28,6 +28,8 @@
       <component v-bind:is="modal_component" :form="form" @data-save="handleDataSave"></component>
     </b-modal>
     <!-- 添加 api/分组 end -->
+
+    <apiAddV2 v-if="isShowApiAddView" :form="form" @api-save="handleApiAddSave" @close="handleApiAddClose"></apiAddV2>
   </div>
 </template>
 
@@ -35,6 +37,7 @@
 import pageMixin from '@/components/mixins/pageMixin'
 import MixUtil from '@/utils/mix'
 import apiAdd from './../components/api-add'
+import apiAddV2 from './../components/api-add-v2'
 import apiGroupAdd from './../components/api-group-add'
 import apiList from './../components/api-list'
 
@@ -49,10 +52,11 @@ export default {
   name: 'dashboard',
   mixins: [pageMixin],
   components: {
-    apiGroupAdd, apiAdd, apiList
+    apiGroupAdd, apiAdd, apiList, apiAddV2
   },
   data() {
     return {
+      isShowApiAddView: false,
       modal_title: '',
       modal_component: '',
       items: items,
@@ -84,7 +88,43 @@ export default {
     }
   },
   methods: {
-    handleShowApiAddModal() {
+    handleShowApiAddFullView() {
+      this.form = {
+        // 输入
+        request: {
+          base: {
+            method: "get",
+            url: "",
+            description: ""
+          },
+          parameters: [],
+          headers: [],
+          body: {
+            type: '1',
+            kvData: [],
+            rawType: '1',
+            rawData: '',
+            rawDataMD: ''
+          }
+        },
+        // 输出
+        response: {
+          body: '{"data":""}',
+          bodyMD: '', 
+          headers: []
+        }
+      }
+      this.isShowApiAddView = true
+    },
+    handleApiAddSave(data) {
+      console.log(data)
+      this.isShowApiAddView = false
+    },
+    handleApiAddClose() {
+      this.isShowApiAddView = false
+    },
+
+    handleShowApiAddModal2() {
       this.modal_title = '接口信息'
       this.modal_component = 'apiAdd'
       this.form = {
@@ -119,8 +159,6 @@ export default {
       this.modal_title = '分组信息'
       this.modal_component = 'apiGroupAdd'
       this.$refs.modalRef.show()
-    },
-    handleApiAddSave() {
     },
     handleModalHidden() {
       this.modal_title = ''
