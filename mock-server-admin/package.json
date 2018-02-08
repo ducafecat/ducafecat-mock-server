@@ -14,8 +14,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "bootstrap": "^4.0.0",
     "bootstrap-vue": "^2.0.0-rc.1",
+    "js-cookie": "^2.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue2-ace-editor": "^0.0.3",
