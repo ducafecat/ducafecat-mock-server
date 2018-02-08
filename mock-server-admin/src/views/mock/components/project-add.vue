@@ -1,45 +1,54 @@
 <template>
-    <b-form>
+    <b-form @submit="handleSubmit">
       <b-form-group
+        label-size="sm"
         label="项目名称:"
         label-for="input-name">
-        <b-form-input
+        <b-form-input size="sm"
             id="input-name"
-            v-model="form.name"
+            v-model="item.name"
             required></b-form-input>
       </b-form-group>
       <b-form-group
+        label-size="sm"
         label="项目基础 URL:"
-        label-for="input-url">
-        <b-form-input
-            id="input-url"
-            v-model="form.url"
+        label-for="input-base_url">
+        <b-form-input size="sm"
+            id="input-base_url"
+            v-model="item.base_url"
             required></b-form-input>
       </b-form-group>
       <b-form-group
+        label-size="sm"
         label="项目描述:"
-        label-for="input-description">
-        <b-form-textarea
-            id="input-description"
-            v-model="form.description" 
+        label-for="input-desc">
+        <b-form-textarea size="sm"
+            id="input-desc"
+            v-model="item.desc" 
             :rows="3"
             :max-rows="6" ></b-form-textarea>
       </b-form-group>
-      <b-button type="submit" variant="primary">保存</b-button>
+      <b-button size="sm" type="submit" variant="primary" style="margin-top:10px;">保存</b-button>
     </b-form>
 </template>
 
 <script>
 export default {
   name: 'cp-project-add',
+  props: ['item'],
   data() {
     return {
-        form: {
-            name: '',
-            url: '',
-            description: ''
-        }
     };
+  },
+  methods: {
+    handleSubmit (evt) {
+      evt.preventDefault();
+      if (this.item.id > 0) {
+        this.$emit('project-update-save')
+      } else {
+        this.$emit('project-add-save')
+      }
+    }
   }
 };
 </script>

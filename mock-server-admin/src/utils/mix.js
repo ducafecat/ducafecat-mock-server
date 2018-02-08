@@ -67,5 +67,10 @@ export default {
             }
         )
         return formatted
+    },
+    // 删除确认
+    delConfirm() {
+        var msg = '您真的确定要删除吗？\n\n请确认！'
+        return confirm(msg)
     }
 }
