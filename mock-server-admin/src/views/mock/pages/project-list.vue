@@ -2,7 +2,7 @@
   <div>
     <b-row>
         <div style="text-align:right;width:98%;">
-            <b-button variant="success" @click="handleShowAddModal">添加</b-button>
+            <b-button variant="outline-success" @click="handleShowAddModal">添加</b-button>
         </div>
     </b-row>
     <b-row>
@@ -19,7 +19,14 @@
             </b-card>
         </b-col>
     </b-row>
-    <b-modal ref="modalRef" id="addModal" title="项目信息" hide-footer @hidden="modalHidden">
+    <b-modal 
+        header-bg-variant="dark"
+        header-text-variant="light"
+        ref="modalRef" 
+        id="addModal" 
+        title="项目信息" 
+        hide-footer 
+        @hidden="modalHidden">
         <!-- <projectAdd /> -->
         <component 
             v-bind:is="select_component" 
