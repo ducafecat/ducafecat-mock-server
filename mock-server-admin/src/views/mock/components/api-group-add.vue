@@ -1,8 +1,5 @@
 <template>
     <b-form>
-      <b-form-group label-size="sm" label="分组代码:" label-for="input-code">
-        <b-form-input size="sm" id="input-code" v-model="form.code" required></b-form-input>
-      </b-form-group>
       <b-form-group label-size="sm" label="分组名称:" label-for="input-name">
         <b-form-input size="sm" id="input-name" v-model="form.name" required></b-form-input>
       </b-form-group>
