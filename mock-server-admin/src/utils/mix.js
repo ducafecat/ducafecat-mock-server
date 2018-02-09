@@ -1,10 +1,13 @@
+import jsBeautify from 'js-beautify/js/lib/beautify'
+
 export default {
 
     // 格式化json
     formatJson (str) {
         try {
-            let obj = JSON.parse(str)
-            return JSON.stringify(obj, null, 4)
+            return jsBeautify.js_beautify(str, { indent_size: 2 })
+            // let obj = JSON.parse(str)
+            // return JSON.stringify(obj, null, 4)
         } catch (err) {
             return str
         }

@@ -2,13 +2,12 @@
   <div id="apiAddView">
     <b-row style="height:100%;" class="p-0 m-0">
         <b-col cols="7" class="p-0">
-          <editor 
-            @init="editorInit"
+          <CodeEditor 
             v-model="form.response.body"
             lang="javascript" 
             theme="solarized_light" 
             :options="aceOptions"
-            width="100%" height="100%"></editor>
+            width="100%" height="100%"></CodeEditor>
         </b-col>
         <b-col cols="5" class="p-1">
             <!-- 基础 -->
@@ -42,9 +41,9 @@
                 </b-card-header>
                 <b-collapse id="request_parameters" role="tabpanel">
                     <b-card-body class="p-0 m-0">
-                        <KVEditer
+                        <KVEditor
                             :items="form.request.parameters"
-                            @cell-edit-done="handleParametersCellEditDone"></KVEditer>
+                            @cell-edit-done="handleParametersCellEditDone"></KVEditor>
                     </b-card-body>
                 </b-collapse>
             </b-card>
@@ -57,9 +56,9 @@
                 </b-card-header>
                 <b-collapse id="request_headers" role="tabpanel">
                     <b-card-body class="p-0 m-0">
-                        <KVEditer
+                        <KVEditor
                           :items="form.request.headers"
-                          @cell-edit-done="handleHeadersCellEditDone"></KVEditer>
+                          @cell-edit-done="handleHeadersCellEditDone"></KVEditor>
                     </b-card-body>
                 </b-collapse>
             </b-card>
@@ -80,17 +79,17 @@
                           </b-form-radio-group>
                           <!-- type end -->
                           <!-- form-data x-www-form-urlencoded -->
-                          <KVEditer
+                          <KVEditor
                             :items="form.request.body.kvData" v-if="form.request.body.type === '1' || form.request.body.type === '2'"
-                            @cell-edit-done="handleBodyRawKVCellEditDone"></KVEditer>
+                            @cell-edit-done="handleBodyRawKVCellEditDone"></KVEditor>
                           <!-- form-data x-www-form-urlencoded end -->
                           <!-- raw -->
                           <b-tabs v-if="form.request.body.type === '3'" small pills card>
                             <b-tab title="DATA - json" class="p-0" active>
-                              <editor v-model="form.request.body.rawData" @init="editorInit();" lang="javascript" theme="solarized_light" width="100%" height="200"></editor>
+                              <CodeEditor v-model="form.request.body.rawData" lang="javascript" theme="solarized_light" width="100%" height="200"></CodeEditor>
                             </b-tab>
                             <b-tab title="README - md" class="p-0">
-                              <editor v-model="form.request.body.rawDataMD" @init="editorInit();" lang="markdown" theme="solarized_light" width="100%" height="200"></editor>
+                              <CodeEditor v-model="form.request.body.rawDataMD" lang="markdown" theme="solarized_light" width="100%" height="200"></CodeEditor>
                             </b-tab>
                           </b-tabs>
                           <!-- raw end -->
@@ -107,7 +106,7 @@
                 </b-card-header>
                 <b-collapse id="response_body" role="tabpanel">
                     <b-card-body class="p-0 m-0">
-                      <editor v-model="form.response.bodyMD" @init="editorInit();" lang="markdown" theme="solarized_light" width="100%" height="200"></editor>
+                      <CodeEditor v-model="form.response.bodyMD" lang="markdown" theme="solarized_light" width="100%" height="200"></CodeEditor>
                     </b-card-body>
                 </b-collapse>
             </b-card>
@@ -120,9 +119,9 @@
                 </b-card-header>
                 <b-collapse id="response_headers" role="tabpanel">
                     <b-card-body class="p-0 m-0">
-                      <KVEditer
+                      <KVEditor
                         :items="form.response.headers"
-                        @cell-edit-done="handleResponseHeadersCellEditDone"></KVEditer>
+                        @cell-edit-done="handleResponseHeadersCellEditDone"></KVEditor>
                     </b-card-body>
                 </b-collapse>
             </b-card>
@@ -130,7 +129,7 @@
 
             <!-- 按钮 -->
             <b-button-group class="d-flex justify-content-center m-2">
-                <b-btn @click="handleFormatResponseJson">格式化</b-btn>
+                <b-btn @click="handleFormatJson">格式化</b-btn>
                 <b-btn @click="handleSave">保存</b-btn>
                 <b-btn @click="handleClose">关闭</b-btn>
             </b-button-group>
@@ -141,15 +140,19 @@
 </template>
 
 <script>
-import KVEditer from "./kv-edit";
+import KVEditor from "./kv-edit";
 import ConstAPI from "@/apis/const";
 import MixUtil from '@/utils/mix'
+
+require('vue2-ace-editor/node_modules/brace/mode/javascript');
+require('vue2-ace-editor/node_modules/brace/mode/markdown');
+require('vue2-ace-editor/node_modules/brace/theme/solarized_light');
 
 export default {
   name: "cp-api-add-v2",
   components: {
-    KVEditer,
-    editor: require('vue2-ace-editor')
+    KVEditor,
+    CodeEditor: require('vue2-ace-editor')
   },
   props: ['form'],
   data() {
@@ -166,26 +169,6 @@ export default {
     };
   },
   methods: {
-    editorInit:function (editor) {
-      console.log(editor)
-      // if (editor !== undefined) {
-      //   editor.$enableEmmet = false
-      // }
-
-      // editor.setOption({
-      //   enableBasicAutocompletion: false,
-      //   enableSnippets: false,
-      //   enableLiveAutocompletion: false
-      //   });
-
-      // require('vue2-ace-editor/node_modules/brace/mode/html');
-      require('vue2-ace-editor/node_modules/brace/mode/javascript');
-      // require('vue2-ace-editor/node_modules/brace/mode/less');
-      // require('vue2-ace-editor/node_modules/brace/mode/json');
-      // require('vue2-ace-editor/node_modules/brace/mode/xml');
-      require('vue2-ace-editor/node_modules/brace/mode/markdown');
-      require('vue2-ace-editor/node_modules/brace/theme/solarized_light');
-    },
 
     handleSave() {
       this.$emit('api-save', { name: 'api-add' ,data: this.form })
@@ -211,16 +194,13 @@ export default {
     handleRequestRawDataJsonChange(value) {
       this.form.request.body.rawData = value
     },
-    // request - body raw - json 格式化
-    handleFormatRequestJson() {
-      this.form.request.body.rawData = MixUtil.formatJson(this.form.request.body.rawData)
-    },
     // response - headers - 单元格编辑完成
     handleResponseHeadersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
       this.form.response.headers[rowIndex][field] = newValue;
     },
-    // response - body raw - json 格式化
-    handleFormatResponseJson() {
+    // json 格式化
+    handleFormatJson() {
+      this.form.request.body.rawData = MixUtil.formatJson(this.form.request.body.rawData)
       this.form.response.body = MixUtil.formatJson(this.form.response.body)
     },
     //////////////////////////////////////////////////////
