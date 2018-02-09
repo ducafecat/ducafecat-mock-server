@@ -4,6 +4,10 @@ export default {
 
     // 格式化json
     formatJson (str) {
+        str = str.trim()
+        if (str === '') {
+            return str
+        }
         try {
             return jsBeautify.js_beautify(str, { indent_size: 2 })
             // let obj = JSON.parse(str)
@@ -70,6 +74,15 @@ export default {
             }
         )
         return formatted
+    },
+    // 格式化 markdown
+    formatMarkdown (str) {
+        str = str.trim()
+        if (str === '') {
+            return str
+        }
+        var prettify = require('prettify-markdown')
+        return  prettify(str)
     },
     // 删除确认
     delConfirm() {

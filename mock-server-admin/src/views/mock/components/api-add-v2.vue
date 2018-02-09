@@ -30,6 +30,9 @@
                       <b-form-textarea size="sm" id="request-base-description" v-model="form.request.base.description" :rows="2"
                                       :max-rows="6"></b-form-textarea>
                   </b-form-group>
+                  <b-form-group horizontal label-size="sm" label="response.body" label-for="response-mockjs">
+                      <b-form-checkbox id="response-mockjs" v-model="form.response.mockjs" value="1" unchecked-value="0">mock.js</b-form-checkbox>
+                  </b-form-group>
                 </b-card-body>
             </b-card>
             <!-- 基础 end -->
@@ -143,6 +146,7 @@
 import KVEditor from "./kv-edit";
 import ConstAPI from "@/apis/const";
 import MixUtil from '@/utils/mix'
+// import TidyMarkdown from 'tidy-markdown'
 
 require('vue2-ace-editor/node_modules/brace/mode/javascript');
 require('vue2-ace-editor/node_modules/brace/mode/markdown');
@@ -202,6 +206,8 @@ export default {
     handleFormatJson() {
       this.form.request.body.rawData = MixUtil.formatJson(this.form.request.body.rawData)
       this.form.response.body = MixUtil.formatJson(this.form.response.body)
+      this.form.request.body.rawDataMD = MixUtil.formatMarkdown(this.form.request.body.rawDataMD)
+      this.form.response.bodyMD = MixUtil.formatMarkdown(this.form.response.bodyMD)
     },
     //////////////////////////////////////////////////////
 

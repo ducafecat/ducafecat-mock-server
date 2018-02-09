@@ -3,8 +3,6 @@ import Router from 'vue-router'
 import Layout from '@/views/dashboard/pages/layout'
 import store from '@/store/index'
 
-import CodeEditor from "@/components/code-editor"
-
 // 导入路由规则
 import DashboardRouter from '@/views/dashboard/router'
 import MockRouter from '@/views/mock/router'

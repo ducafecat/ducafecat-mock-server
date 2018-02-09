@@ -111,6 +111,7 @@ export default {
         response: {
           body: '{"data":""}',
           bodyMD: '', 
+          mockjs: 0,
           headers: []
         }
       }
@@ -149,6 +150,7 @@ export default {
         response: {
           body: '{"data":""}',
           bodyMD: '', 
+          mockjs: 0,
           headers: []
         }
       }
