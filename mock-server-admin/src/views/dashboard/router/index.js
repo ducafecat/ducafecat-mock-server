@@ -2,7 +2,7 @@ let dashboard = () => import('./../pages/dashboard')
 
 export default [
   {
-    name: '首页',
+    name: '面板',
     path: '',
     component: dashboard
   }

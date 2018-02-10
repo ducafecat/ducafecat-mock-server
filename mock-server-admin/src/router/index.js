@@ -22,7 +22,6 @@ concat(MockRouter) // 模拟数据
 let router = new Router({
   routes: [
     {
-      name: '首页',
       path: '/',
       component: Layout,
       children: childrenRouters

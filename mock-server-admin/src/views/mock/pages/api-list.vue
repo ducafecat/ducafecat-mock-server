@@ -24,12 +24,14 @@
       :title="modal_title" 
       hide-footer 
       @hidden="handleModalHidden" 
-      size="lg" >
+      size="sm" >
       <component v-bind:is="modal_component" :form="form" @data-save="handleDataSave"></component>
     </b-modal>
     <!-- 添加 api/分组 end -->
-
-    <apiAddV2 v-if="isShowApiAddView" :form="form" @api-save="handleApiAddSave" @close="handleApiAddClose"></apiAddV2>
+    
+    <!-- api信息 -->
+    <apiAdd v-if="isShowApiAddView" :form="form" @api-save="handleApiAddSave" @close="handleApiAddClose"></apiAdd>
+    <!-- api信息 end -->
   </div>
 </template>
 
@@ -37,7 +39,6 @@
 import pageMixin from '@/components/mixins/pageMixin'
 import MixUtil from '@/utils/mix'
 import apiAdd from './../components/api-add'
-import apiAddV2 from './../components/api-add-v2'
 import apiGroupAdd from './../components/api-group-add'
 import apiList from './../components/api-list'
 
@@ -49,10 +50,10 @@ const items = [
 ]
 
 export default {
-  name: 'dashboard',
+  name: 'api-list-page',
   mixins: [pageMixin],
   components: {
-    apiGroupAdd, apiAdd, apiList, apiAddV2
+    apiGroupAdd, apiAdd, apiList
   },
   data() {
     return {
