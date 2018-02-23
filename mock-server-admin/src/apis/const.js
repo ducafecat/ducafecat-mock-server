@@ -2,11 +2,11 @@ export default {
   // http 方法
   httpMethods: () => {
     return [
-      {value: 'get', text: 'get'},
-      {value: 'post', text: 'post'},
-      {value: 'delete', text: 'delete'},
-      {value: 'put', text: 'put'},
-      {value: 'patch', text: 'patch'}
+      {value: 'get', text: 'get', color: 'primary'},
+      {value: 'post', text: 'post', color: 'secondary'},
+      {value: 'delete', text: 'delete', color: 'success'},
+      {value: 'put', text: 'put', color: 'danger'},
+      {value: 'patch', text: 'patch', color: 'info'}
     ]
   },
   // http 类型

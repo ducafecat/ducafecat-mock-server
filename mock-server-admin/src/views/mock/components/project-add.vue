@@ -1,13 +1,14 @@
 <template>
     <b-form @submit="handleSubmit">
-      <b-form-group
+      <b-form-group 
+        v-if="item.id !== undefined"
         label-size="sm"
-        label="项目名称:"
-        label-for="input-name">
-        <b-form-input size="sm"
-            id="input-name"
-            v-model="item.name"
-            required></b-form-input>
+        label="ID:"
+        label-for="input-id">
+        <b-form-input size="sm" 
+          disabled
+          id="input-id"
+          v-model="item.id"></b-form-input>
       </b-form-group>
       <b-form-group
         label-size="sm"
@@ -16,6 +17,16 @@
         <b-form-input size="sm"
             id="input-base_url"
             v-model="item.base_url"
+            :disabled="item.id !== undefined"
+            required></b-form-input>
+      </b-form-group>
+      <b-form-group
+        label-size="sm"
+        label="项目名称:"
+        label-for="input-name">
+        <b-form-input size="sm"
+            id="input-name"
+            v-model="item.name"
             required></b-form-input>
       </b-form-group>
       <b-form-group

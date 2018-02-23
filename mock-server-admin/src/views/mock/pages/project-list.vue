@@ -12,9 +12,9 @@
                     {{it.desc}}
                 </p>
                 <b-button-group size="sm" class="float-right">
-                    <b-button :to="`/mock/projects/${it.id}/apis`" title="进入"><span class="oi oi-list"></span></b-button>
-                    <b-button title="修改" @click="handleShowEditModal(it)"><span class="oi oi-pencil"></span></b-button>
-                    <b-button title="删除" @click="handleDelete(it.id)"><span class="oi oi-delete"></span></b-button>
+                    <b-button variant="link" :to="`/mock/projects/${it.id}/apis`" title="进入"><span class="oi oi-list"></span></b-button>
+                    <b-button variant="link" title="修改" @click="handleShowEditModal(it)"><span class="oi oi-pencil"></span></b-button>
+                    <b-button variant="link" title="删除" @click="handleDelete(it.id)"><span class="oi oi-delete"></span></b-button>
                 </b-button-group>
             </b-card>
         </b-col>
@@ -60,7 +60,6 @@ export default {
   methods: {
       handleShowAddModal() {
           this.data_item = {
-            "id": 0,
             "name": "",
             "base_url": "",
             "desc": ""

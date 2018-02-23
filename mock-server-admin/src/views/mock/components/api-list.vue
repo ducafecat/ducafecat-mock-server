@@ -16,7 +16,19 @@
             </b-button-group>
         </div>
         <b-collapse :id="'collapse-'+index" :visible="index === 0" class="tbBody">
-            <b-table striped hover :fields="fields" :items="it.items">
+            <b-table small outlined bordered striped hover :fields="fields" :items="it.items">
+                <template slot="method" slot-scope="row">
+                    <div style="text-align:center;">
+                        <h5><b-badge :variant="methodColor(row.item.method)" style="width:80px;">{{row.item.method}}</b-badge></h5>
+                    </div>
+                </template>
+                <template slot="show_ops" slot-scope="row">
+                    <b-button-group size="sm" class="float-right">
+                        <b-button title="预览" variant="link" @click=""><span class="oi oi-eye"></span></b-button>
+                        <b-button title="修改" variant="link" @click=""><span class="oi oi-pencil"></span></b-button>
+                        <b-button title="删除" variant="link" @click=""><span class="oi oi-delete"></span></b-button>
+                    </b-button-group>
+                </template>
             </b-table>
         </b-collapse>
       </div>
@@ -35,20 +47,47 @@ export default {
         fields: [
                 {
                     key: "method",
-                    label: "method"
+                    label: "method",
+                    sortable: true,
+                    thStyle: "width:120px;text-align:center;"
                 },
                 {
                     key: "url",
-                    label: "url"
+                    label: "url",
+                    sortable: true
                 },
                 {
                     key: "description",
                     label: "description"
+                },
+                {
+                    key: "show_ops",
+                    label: "operate",
+                    thStyle: "width:120px;text-align:center;"
                 }
             ]
     };
   },
+  computed: {
+      
+  },
   methods: {
+    // method颜色
+    methodColor(method) {
+        switch(method) {
+        case 'get':
+                return 'success';
+        case 'post':
+                return 'primary';
+        case 'delete':
+                return 'danger';
+        case 'put':
+                return 'info';
+        case 'patch':
+                return 'light';
+        }
+    },
+
     //   group
     handleGroupEdit(item, index) {
         this.$emit('event-group-edit', item)
