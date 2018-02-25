@@ -23,6 +23,7 @@ async function start () {
   // 加载路由中间件
   app.use(router.routes()).use(router.allowedMethods())
 
+  // http status 404 改 200
   app.use(async (ctx, next) => {
     await next()
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset
