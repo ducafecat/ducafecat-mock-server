@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "ducafe-bs-table",
+  name: "ducafe-bs-alert",
   props: ["variant", "description"],
   computed: {
   },

@@ -2,7 +2,7 @@ import Router from 'koa-router'
 
 let mock = new Router()
 
-mock.get('/api', async (ctx, next) => {
+mock.get('/one', async (ctx, next) => {
   let html = `
     <ul>
       <li><a href="/page/helloworld">/page/helloworld</a></li>

@@ -1,21 +1,22 @@
 <template>
-    <b-jumbotron header="Bootstrap Vue" lead="Bootstrap 4 Components for Vue.js 2" >
-        <p>For more information visit website</p>
-        <b-btn variant="primary" href="#">More Info</b-btn>    
-    </b-jumbotron>
+  <b-jumbotron header="Bootstrap Vue" lead="Bootstrap 4 Components for Vue.js 2">
+    <p>For more information visit website</p>
+    <b-btn variant="primary" href="#">More Info</b-btn>
+  </b-jumbotron>
 </template>
 
 <script>
-export default {
+  import pageMixin from '../components/mixins/pageMixin'
+
+  export default {
     layout: 'dashboard',
+    mixins: [pageMixin],
     name: 'dashboard',
-    components: {
-    },
+    components: {},
     data() {
-        return {
-        }
+      return {}
     }
-}
+  }
 </script>
 
 <style scoped>
