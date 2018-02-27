@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import pageMixin from '../components/mixins/pageMixin'
+  import pageMixin from './../../components/mixins/pageMixin'
 
   export default {
     layout: 'dashboard',

@@ -34,10 +34,9 @@
 
 <script>
   export default {
-    name: 'bs-edit-table',
+    name: 'component-edit-table',
     props: ['columns', 'items'],
-    computed: {
-    },
+    computed: {},
     data() {
       return {
         chkAll: false,

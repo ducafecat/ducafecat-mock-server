@@ -19,12 +19,14 @@
     "cross-env": "^5.0.1",
     "http-proxy-middleware": "^0.17.4",
     "jquery": "^3.3.1",
+    "js-beautify": "^1.7.5",
     "js-cookie": "^2.2.0",
     "koa": "^2.4.1",
     "koa-router": "^7.4.0",
     "koa2-connect": "^1.0.2",
     "nuxt": "latest",
     "open-iconic": "^1.1.1",
+    "prettify-markdown": "^0.1.1",
     "source-map-support": "^0.4.15"
   },
   "devDependencies": {

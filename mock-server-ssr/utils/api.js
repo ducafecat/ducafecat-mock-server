@@ -32,7 +32,7 @@ instance.interceptors.response.use((res) => {
         break
       case 401:
         store.dispatch('LogOut').then(() => {
-          router.push({path: '/login'})
+          // router.push({path: '/login'})
         })
         break
       default:
@@ -46,7 +46,7 @@ instance.interceptors.response.use((res) => {
   if (res) {
     if (res.status === 401) {
       store.dispatch('LogOut').then(() => {
-        router.push({path: '/login'})
+        // router.push({path: '/login'})
       })
     } else if (res.data && res.data.error) {
       _errMesage(res.data.error)
@@ -83,30 +83,30 @@ const createFormAPI = (url, method, config) => {
 }
 
 // 创建用于导出数据的表单
-const createExportForm = (url, data) => {
-  const form = document.createElement('form')
-
-  form.method = 'POST'
-  form.action = url
-
-  if (Array.isArray(data)) {
-    data.forEach((d) => {
-      const input = document.createElement('input')
-      input.name = 'ids[]'
-      input.value = d
-      form.appendChild(input)
-    })
-  } else {
-    const input = document.createElement('input')
-    input.name = 'project_id'
-    input.value = data
-    form.appendChild(input)
-  }
-
-  document.body.appendChild(form)
-  form.submit()
-  document.body.removeChild(form)
-}
+// const createExportForm = (url, data) => {
+//   const form = document.createElement('form')
+//
+//   form.method = 'POST'
+//   form.action = url
+//
+//   if (Array.isArray(data)) {
+//     data.forEach((d) => {
+//       const input = document.createElement('input')
+//       input.name = 'ids[]'
+//       input.value = d
+//       form.appendChild(input)
+//     })
+//   } else {
+//     const input = document.createElement('input')
+//     input.name = 'project_id'
+//     input.value = data
+//     form.appendChild(input)
+//   }
+//
+//   document.body.appendChild(form)
+//   form.submit()
+//   document.body.removeChild(form)
+// }
 
 // 业务
 

@@ -2,19 +2,19 @@ const routers = {
     state: {
         routeMaps: [{
             name: '首页',
-            path: '/',
+            path: '/dashboard',
             childs: [
                 {
                     name: '项目',
-                    path: '/mock/projects',
+                    path: '/projects',
                     childs: [
                         {
                             name: 'API接口',
-                            path: '/mock/projects/:id/apis'
+                            path: '/projects/:id'
                         },
                         {
                             name: 'API手册',
-                            path: '/mock/projects/:id/books'
+                            path: '/books/:id'
                         }
                 ]}
             ]
