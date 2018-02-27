@@ -53,7 +53,7 @@
     methods: {
       handleSubmit(evt) {
         evt.preventDefault()
-        if (this.item.id > 0) {
+        if (this.item.id !== undefined) {
           this.$emit('project-update-save')
         } else {
           this.$emit('project-add-save')

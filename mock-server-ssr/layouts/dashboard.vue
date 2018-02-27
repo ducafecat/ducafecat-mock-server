@@ -45,11 +45,11 @@
       <b-breadcrumb :items="breadcrumb" />
       <!-- 面包靴 end -->
       <!-- alert -->
-      <DucafeBsAlert
+      <BSAlert
         v-if="alertDescription !== ''"
         :variant="alertVariant"
         :description="alertDescription"
-        @dismissed-done="clearAlert"></DucafeBsAlert>
+        @dismissed-done="clearAlert"></BSAlert>
       <!-- alert end -->
       <nuxt/>
     </main>

@@ -30,7 +30,6 @@
       title="项目信息"
       hide-footer
       @hidden="modalHidden">
-      <!-- <projectAdd /> -->
       <component
         v-bind:is="select_component"
         :item.sync="data_item"

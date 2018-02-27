@@ -1,5 +1,4 @@
 import { mapGetters } from 'vuex'
-import store from '../../store'
 
 export default {
   data() {
@@ -16,25 +15,26 @@ export default {
   },
   methods: {
     primaryAlert (description) {
-      store.commit('SET_ALERT', {
+      this.$store.commit('SET_ALERT', {
         variant: 'primary',
         description: description
       })
     },
     successAlert (description) {
-      store.commit('SET_ALERT', {
+      console.log(this)
+      this.$store.commit('SET_ALERT', {
         variant: 'success',
         description: description
       })
     },
     errAlert (description) {
-      store.commit('SET_ALERT', {
+      this.$store.commit('SET_ALERT', {
         variant: 'danger',
         description: description
       })
     },
     clearAlert () {
-      store.commit('SET_ALERT', {
+      this.$store.commit('SET_ALERT', {
         variant: '',
         description: ''
       })
