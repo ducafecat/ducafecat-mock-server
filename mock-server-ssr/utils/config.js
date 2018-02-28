@@ -2,11 +2,11 @@ export default {
   'appName': 'mockServer',
   'appMiniName': 'M',
   'whiteList': ['/login'],
-  'apiBaseURL': 'api',
+  'apiBaseURL': '/api',
   'proxy': {
-    target: 'https://www.easy-mock.com',
+    target: 'https://www.easy-mock.com/mock/5a7bac516347684a0857e274/mserver',
     changeOrigin: true,
-    rewrite: path => path.replace('/api', '/mock/5a7bac516347684a0857e274/mserver'),
+    rewrite: path => path.replace('/api', ''),
     logs: true
   }
 }

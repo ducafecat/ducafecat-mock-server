@@ -1,11 +1,14 @@
 <template>
   <div class="api-list">
-    <b-card bg-variant="dark" text-variant="white" title="PLab课研管理">
+    <b-card bg-variant="dark" text-variant="white" :title="project_item.name">
       <p class="card-text">
-        Base URL : https://www.easy-mock.com/mock/59ed5d9a70da825a6d4c87b7/dv
+        Base URL : https://www.easy-mock.com/mock/{{project_item.id}}/{{project_item.base_url}}
       </p>
       <p class="card-text">
-        Project ID : 59ed5d9a70da825a6d4c87b7
+        Project ID : {{project_item.id}}
+      </p>
+      <p class="card-text">
+        Description : {{project_item.desc}}
       </p>
     </b-card>
     <div style="text-align:right;width:100%;margin-top:10px;margin-bottom:10px;">
@@ -13,7 +16,14 @@
     </div>
 
     <!-- API分组 -->
-    <apiList :items="data_list" @event-api-add="handleShowApiAddFullView"></apiList>
+    <apiList 
+      :items="data_list" 
+      @group-edit="handleShowGroupUpdateModal"
+      @group-delete="handelGroupDelete"
+      @api-add="handleShowApiAddFullView"
+      @api-edit="handleShowApiEditFullView"
+      @api-delete="handleApiDelete"
+      ></apiList>
     <!-- API分组 end -->
 
     <!-- 添加 api/分组 -->
@@ -25,7 +35,11 @@
       hide-footer
       @hidden="handleModalHidden"
       size="sm">
-      <component v-bind:is="modal_component" :form="form" @data-save="handleDataSave"></component>
+      <component 
+        v-bind:is="modal_component" 
+        :item.sync="group_item"
+        @group-add-save="handleGroupAddSave"
+        @group-update-save="handleGroupUpdateSave" ></component>
     </b-modal>
     <!-- 添加 api/分组 end -->
 
@@ -37,158 +51,205 @@
 </template>
 
 <script>
-  import pageMixin from '~/components/mixins/pageMixin'
-  import MixUtil from '~/utils/mix'
-  import apiAdd from '~/components/apiAdd'
-  import apiGroupAdd from '~/components/apiGroupAdd'
-  import apiList from '~/components/apiList'
+import axios from 'axios'
+import pageMixin from '~/components/mixins/pageMixin'
+import MixUtil from '~/utils/mix'
+import {project, group} from '~/utils/api'
+import apiAdd from '~/components/apiAdd'
+import apiGroupAdd from '~/components/apiGroupAdd'
+import apiList from '~/components/apiList'
 
-  const items = [
-    {method: 'get', url: '/users/', description: 'Dickerson', last_name: 'Macdonald'},
-    {isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw'},
-    {isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson'},
-    {isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney'}
-  ]
+const items = [
+  {
+    method: 'get',
+    url: '/users/',
+    description: 'Dickerson',
+    last_name: 'Macdonald'
+  },
+  {isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw'},
+  {isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson'},
+  {isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney'}
+]
 
-  export default {
-    name: 'project-detail',
-    layout: 'dashboard',
-    mixins: [pageMixin],
-    components: {
-      apiGroupAdd,
-      apiAdd,
-      apiList
-    },
-    data() {
-      return {
-        isShowApiAddView: false,
-        fullscreen_component: '',
-        modal_title: '',
-        modal_component: '',
-        items: items,
-        form: '',
-        data_list: [
-          {
-            _id: 1232132132312,
-            gCode: 'menus',
-            gName: '3.1-菜单',
-            items: [
-              {method: 'get', url: '/menus/', description: '数据列表', _id: 1232132132312},
-              {method: 'post', url: '/menus/', description: '数据添加', _id: 1232132132312},
-              {method: 'put', url: '/menus/:id', description: '数据修改', _id: 1232132132312},
-              {method: 'delete', url: '/menus/:id', description: '数据删除', _id: 1232132132312}
-            ]
-          },
-          {
-            _id: 1232132132312,
-            gCode: 'menus2',
-            gName: '3.2-菜单',
-            items: [
-              {method: 'get', url: '/menus/', description: '数据列表', _id: 1232132132312},
-              {method: 'post', url: '/menus/', description: '数据添加', _id: 1232132132312},
-              {method: 'put', url: '/menus/:id', description: '数据修改', _id: 1232132132312},
-              {method: 'delete', url: '/menus/:id', description: '数据删除', _id: 1232132132312}
-            ]
+export default {
+  // async asyncData({params}) {
+  //   let {data} = await project.info({data: {id: params.id}})
+  //   return {project_item: data}
+  //   // return { params: params }
+  // },
+  asyncData({params, error}) {
+    return axios
+      .all([
+        project.info({id: params.id}),
+        group.list({pid: params.id})
+      ])
+      .then(
+        axios.spread(function(project_item, groupList) {
+          return {
+            project_item: project_item.data,
+            data_list: groupList.data
           }
-        ]
-      }
-    },
-    methods: {
-      handleShowApiAddFullView() {
-        this.form = {
-          // 输入
-          request: {
-            base: {
-              method: 'get',
-              url: '',
-              description: ''
-            },
-            parameters: [],
-            headers: [],
-            body: {
-              type: '1',
-              kvData: [],
-              rawType: '1',
-              rawData: '',
-              rawDataMD: ''
-            }
-          },
-          // 输出
-          response: {
-            body: '{"data":""}',
-            bodyMD: '',
-            mockjs: 0,
-            headers: []
-          }
-        }
-        this.fullscreen_component = 'apiAdd'
-        this.isShowApiAddView = true
-      },
-      handleApiAddSave(data) {
-        console.log(data)
-        this.fullscreen_component = ''
-        this.isShowApiAddView = false
-      },
-      handleApiAddClose() {
-        this.fullscreen_component = ''
-        this.isShowApiAddView = false
-      },
-
-      handleShowApiAddModal2() {
-        this.modal_title = '接口信息'
-        this.modal_component = 'apiAdd'
-        this.form = {
-          // 输入
-          request: {
-            base: {
-              method: 'get',
-              url: '',
-              description: ''
-            },
-            parameters: [],
-            headers: [],
-            body: {
-              type: '1',
-              kvData: [],
-              rawType: '1',
-              rawData: '',
-              rawDataMD: ''
-            }
-          },
-          // 输出
-          response: {
-            body: '{"data":""}',
-            bodyMD: '',
-            mockjs: 0,
-            headers: []
-          }
-        }
-        this.form.response.body = MixUtil.formatJson(this.form.response.body)
-        this.$refs.modalRef.show()
-      },
-      handleShowGroupAddModal() {
-        this.modal_title = '分组信息'
-        this.modal_component = 'apiGroupAdd'
-        this.$refs.modalRef.show()
-      },
-      handleModalHidden() {
-        this.modal_title = ''
-        this.modal_component = ''
-      },
-      handleDataSave(data) {
-        console.log(data)
-        this.$refs.modalRef.hide()
-        this.successAlert('api接口添加成功')
-      }
+        })
+      )
+      .catch(error => console.log(error))
+  },
+  name: 'project-detail',
+  layout: 'dashboard',
+  mixins: [pageMixin],
+  components: {
+    apiGroupAdd,
+    apiAdd,
+    apiList
+  },
+  data() {
+    return {
+      params: {},
+      isShowApiAddView: false,
+      fullscreen_component: '',
+      modal_title: '',
+      modal_component: '',
+      items: items,
+      form: '',
+      project_item: {},
+      data_list: [],
+      group_item: {}
     }
+  },
+  methods: {
+    // 业务
+    reloadData () {
+      group.list({id: this.project_item.id}).then(res => {
+        this.project_item = res.data
+      })
+    },
+
+    // api
+    handleShowApiAddFullView() {
+      this.form = {
+        // 输入
+        request: {
+          base: {
+            method: 'get',
+            url: '',
+            description: ''
+          },
+          parameters: [],
+          headers: [],
+          body: {
+            type: '1',
+            kvData: [],
+            rawType: '1',
+            rawData: '',
+            rawDataMD: ''
+          }
+        },
+        // 输出
+        response: {
+          body: '{"data":""}',
+          bodyMD: '',
+          mockjs: 0,
+          headers: []
+        }
+      }
+      this.fullscreen_component = 'apiAdd'
+      this.isShowApiAddView = true
+    },
+    handleApiAddSave(data) {
+      console.log(data)
+      this.fullscreen_component = ''
+      this.isShowApiAddView = false
+    },
+    handleApiAddClose() {
+      this.fullscreen_component = ''
+      this.isShowApiAddView = false
+    },
+    handleShowApiAddModal2() {
+      this.modal_title = '接口信息'
+      this.modal_component = 'apiAdd'
+      this.form = {
+        // 输入
+        request: {
+          base: {
+            method: 'get',
+            url: '',
+            description: ''
+          },
+          parameters: [],
+          headers: [],
+          body: {
+            type: '1',
+            kvData: [],
+            rawType: '1',
+            rawData: '',
+            rawDataMD: ''
+          }
+        },
+        // 输出
+        response: {
+          body: '{"data":""}',
+          bodyMD: '',
+          mockjs: 0,
+          headers: []
+        }
+      }
+      this.form.response.body = MixUtil.formatJson(this.form.response.body)
+      this.$refs.modalRef.show()
+    },
+
+    // 分组
+    handleShowGroupAddModal() {
+      this.group_item = {
+        name: ''
+      }
+      this.modal_title = '添加分组信息'
+      this.modal_component = 'apiGroupAdd'
+      this.$refs.modalRef.show()
+    },
+    handleShowGroupUpdateModal(item, index) {
+      this.group_item = item
+      this.modal_title = '修改分组信息'
+      this.modal_component = 'apiGroupAdd'
+      this.$refs.modalRef.show()
+    },
+    handleModalHidden() {
+      this.modal_title = ''
+      this.modal_component = ''
+    },
+    handleGroupAddSave() {
+      this.$refs.modalRef.hide()
+      group.create(this.group_item).then(res => {
+        this.successAlert('分组添加成功.')
+      })
+    },
+    handleGroupUpdateSave() {
+      this.$refs.modalRef.hide()
+      group.update(this.group_item).then(res => {
+        this.successAlert('分组修改成功.')
+      })
+    },
+    handelGroupDelete(item, index) {
+      group.delete(item).then(res => {
+        this.reloadData()
+        this.successAlert('分组删除成功.')
+      })
+    }
+  },
+  mounted: function() {
+    // let setupData = async () => {
+    //   let { data } = await project.info({data: {id: this.params.id}})
+    //   this.project_item = data
+    // }
+    // setupData()
   }
+}
 </script>
 
 <style>
-  /* .api-list .popover-body {
+/* .api-list .popover-body {
     padding: 0px
   } */
 </style>
 
 <style scoped>
+
 </style>

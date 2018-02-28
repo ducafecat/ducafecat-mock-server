@@ -72,7 +72,7 @@
       },
       handleAddSave() {
         this.$refs.modalRef.hide()
-        Api.project.create({data: this.data_item}).then(res => {
+        Api.project.create(this.data_item).then(res => {
           this.successAlert('项目添加成功.')
         })
       },
@@ -83,16 +83,13 @@
       },
       handleUpdateSave() {
         this.$refs.modalRef.hide()
-        Api.project.update({data: this.data_item}).then(res => {
+        Api.project.update(this.data_item).then(res => {
           this.successAlert('项目修改成功.')
         })
       },
       handleDelete(pid) {
         if (MixUtil.delConfirm(pid)) {
-          let data = {
-            id: pid
-          }
-          Api.project.delete({data}).then(res => {
+          Api.project.delete({id: pid}).then(res => {
             this.successAlert('项目删除成功.')
           })
         }

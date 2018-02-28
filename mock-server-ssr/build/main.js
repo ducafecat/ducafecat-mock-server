@@ -90,7 +90,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'starter',
+    title: 'mock server',
     meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { hid: 'description', name: 'description', content: 'Nuxt.js project' }],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
     // script: [
@@ -119,6 +119,7 @@ module.exports = {
    ** Build configuration
    */
   build: {
+    vendor: ['axios'],
     /*
      ** Run ESLINT on save
      */
@@ -131,7 +132,13 @@ module.exports = {
           exclude: /(node_modules)/
         });
       }
-    }
+    },
+
+    modules: ['@nuxtjs/axios', '@nuxtjs/proxy'],
+    proxy: [['/api', {
+      target: 'https://www.easy-mock.com',
+      pathRewrite: { '^/api': '/mock/5a7bac516347684a0857e274/mserver' }
+    }]]
   }
 };
 
@@ -167,12 +174,12 @@ router.use('/mock', __WEBPACK_IMPORTED_MODULE_1__controllers_mock__["a" /* defau
   'appName': 'mockServer',
   'appMiniName': 'M',
   'whiteList': ['/login'],
-  'apiBaseURL': 'api',
+  'apiBaseURL': '/api',
   'proxy': {
-    target: 'https://www.easy-mock.com',
+    target: 'https://www.easy-mock.com/mock/5a7bac516347684a0857e274/mserver',
     changeOrigin: true,
     rewrite: function rewrite(path) {
-      return path.replace('/api', '/mock/5a7bac516347684a0857e274/mserver');
+      return path.replace('/api', '');
     },
     logs: true
   }

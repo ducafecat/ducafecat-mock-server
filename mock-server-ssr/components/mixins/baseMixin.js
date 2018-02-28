@@ -21,7 +21,6 @@ export default {
       })
     },
     successAlert (description) {
-      console.log(this)
       this.$store.commit('SET_ALERT', {
         variant: 'success',
         description: description

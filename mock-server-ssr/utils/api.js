@@ -10,8 +10,13 @@ const _errMesage = (message) => {
   })
 }
 
+let baseURL = Config.apiBaseURL
+if (process.server) {
+  baseURL = Config.proxy.target
+}
+
 const instance = axios.create({
-  baseURL: Config.apiBaseURL
+  baseURL
 })
 
 instance.interceptors.request.use((config) => {
@@ -120,25 +125,25 @@ const u = {
 const project = {
   list: config => createAPI('/project', 'get', config),
   create: config => createAPI('/project', 'post', config),
-  update: config => createAPI(`/project/${config.data.id}`, 'put', config),
-  delete: config => createAPI(`/project/${config.data.id}`, 'delete', config),
-  info: config => createAPI(`/project/${config.data.id}`, 'get', config)
+  update: config => createAPI(`/project/${config.id}`, 'put', config),
+  delete: config => createAPI(`/project/${config.id}`, 'delete', config),
+  info: config => createAPI(`/project/${config.id}`, 'get', config)
 }
 
 const group = {
   list: config => createAPI('/group', 'get', config),
   create: config => createAPI('/group', 'post', config),
-  update: config => createAPI(`/group/${config.data.id}`, 'put', config),
-  delete: config => createAPI(`/group/${config.data.id}`, 'delete', config),
-  info: config => createAPI(`/group/${config.data.id}`, 'get', config)
+  update: config => createAPI(`/group/${config.id}`, 'put', config),
+  delete: config => createAPI(`/group/${config.id}`, 'delete', config),
+  info: config => createAPI(`/group/${config.id}`, 'get', config)
 }
 
 const mock = {
   list: config => createAPI('/mock', 'get', config),
   create: config => createAPI('/mock', 'post', config),
-  update: config => createAPI(`/mock/${config.data.id}`, 'put', config),
-  delete: config => createAPI(`/mock/${config.data.id}`, 'delete', config),
-  info: config => createAPI(`/mock/${config.data.id}`, 'get', config)
+  update: config => createAPI(`/mock/${config.id}`, 'put', config),
+  delete: config => createAPI(`/mock/${config.id}`, 'delete', config),
+  info: config => createAPI(`/mock/${config.id}`, 'get', config)
 }
 
 const dashboard = {
