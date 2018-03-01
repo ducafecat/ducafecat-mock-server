@@ -26,7 +26,7 @@
       ></apiList>
     <!-- API分组 end -->
 
-    <!-- 添加 api/分组 -->
+    <!-- 添加 分组 -->
     <b-modal
       ref="modalRef"
       header-bg-variant="dark"
@@ -43,7 +43,7 @@
     </b-modal>
     <!-- 添加 api/分组 end -->
 
-    <!-- api信息 -->
+    <!-- 添加 api接口 -->
     <component v-show="isShowApiAddView" v-bind:is="fullscreen_component" :form="form" @api-save="handleApiAddSave" @close="handleApiAddClose"></component>
     <!--<apiAdd v-show="isShowApiAddView" :form="form" @api-save="handleApiAddSave" @close="handleApiAddClose"></apiAdd>-->
     <!-- api信息 end -->
@@ -79,10 +79,7 @@ export default {
   // },
   asyncData({params, error}) {
     return axios
-      .all([
-        project.info({id: params.id}),
-        group.list({pid: params.id})
-      ])
+      .all([project.info({id: params.id}), group.list({pid: params.id})])
       .then(
         axios.spread(function(project_item, groupList) {
           return {
@@ -101,6 +98,11 @@ export default {
     apiAdd,
     apiList
   },
+  watch: {
+    isShowApiAddView(show) {
+      document.body.style.overflow = show ? 'hidden' : 'auto'
+    }
+  },
   data() {
     return {
       params: {},
@@ -117,18 +119,19 @@ export default {
   },
   methods: {
     // 业务
-    reloadData () {
+    reloadData() {
       group.list({id: this.project_item.id}).then(res => {
         this.project_item = res.data
       })
     },
 
     // api
-    handleShowApiAddFullView() {
+    handleShowApiAddFullView(item) {
       this.form = {
         // 输入
         request: {
           base: {
+            group: item.name,
             method: 'get',
             url: '',
             description: ''
@@ -154,12 +157,8 @@ export default {
       this.fullscreen_component = 'apiAdd'
       this.isShowApiAddView = true
     },
-    handleShowApiEditFullView() {
-
-    },
-    handleApiDelete() {
-
-    },
+    handleShowApiEditFullView(item) {},
+    handleApiDelete() {},
     handleApiAddSave(data) {
       console.log(data)
       this.fullscreen_component = ''

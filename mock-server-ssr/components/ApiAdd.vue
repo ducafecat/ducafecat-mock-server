@@ -2,8 +2,6 @@
   <div id="apiAddView">
     <b-row style="height:100%;" class="p-0 m-0">
       <b-col cols="7" class="p-0">
-        <!--<code-editor width="100%" height="100%"></code-editor>-->
-        <!--<div ref="codeEditor" style="width: 100%; height: 100%"></div>-->
         <code-editor
           ref="responseBodyEditor"
           :content="this.form.response.body"
@@ -12,7 +10,7 @@
           theme="solarized_light"
           width="100%" height="100%"></code-editor>
       </b-col>
-      <b-col cols="5" class="p-1">
+      <b-col cols="5" class="p-1" style="overflow:auto;">
         <!-- 基础 -->
         <b-card
           header="api base"
@@ -21,6 +19,9 @@
           header-tag="header"
           header-bg-variant="dark">
           <b-card-body>
+            <b-form-group horizontal label-size="sm" label="Group" label-for="request-base-group">
+              <b-form-input size="sm" id="request-base-group" v-model="form.request.base.group" readonly required></b-form-input>
+            </b-form-group>
             <b-form-group horizontal label-size="sm" label="Method" label-for="request-base-method">
               <b-form-select size="sm" v-model="form.request.base.method" :options="methodOptions" required/>
             </b-form-group>
@@ -49,9 +50,8 @@
           </b-card-header>
           <b-collapse id="request_parameters" role="tabpanel">
             <b-card-body class="p-0 m-0">
-              <!--<parameters-editor-->
-                <!--:items="form.request.parameters"-->
-                <!--@cell-edit-done="handleParametersCellEditDone"></parameters-editor>-->
+              <parameters-editor
+                :items.sync="form.request.parameters" ></parameters-editor>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -64,9 +64,8 @@
           </b-card-header>
           <b-collapse id="request_headers" role="tabpanel">
             <b-card-body class="p-0 m-0">
-              <!--<ParametersEditor-->
-                <!--:items="form.request.headers"-->
-                <!--@cell-edit-done="handleHeadersCellEditDone"></ParametersEditor>-->
+              <parameters-editor
+                :items.sync="form.request.headers" ></parameters-editor>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -87,31 +86,29 @@
                 </b-form-radio-group>
                 <!-- type end -->
                 <!-- form-data x-www-form-urlencoded -->
-                <!--<ParametersEditor-->
-                  <!--:items="form.request.body.kvData"-->
-                  <!--v-if="form.request.body.type === '1' || form.request.body.type === '2'"-->
-                  <!--@cell-edit-done="handleBodyRawKVCellEditDone"></ParametersEditor>-->
+                <parameters-editor
+                  :items.sync="form.request.body.kvData"
+                  v-if="form.request.body.type === '1' || form.request.body.type === '2'" ></parameters-editor>
                 <!-- form-data x-www-form-urlencoded end -->
                 <!-- raw -->
                 <b-tabs v-if="form.request.body.type === '3'" small pills card>
                   <b-tab title="DATA - json" class="p-0" active>
-                    <!--<CodeEditor-->
-                      <!--ref="requestBodyRawDataEditor"-->
-                      <!--:sync="isCodeEditorSync"-->
-                      <!--:content="form.request.body.rawData"-->
-                      <!--lang="javascript"-->
-                      <!--theme="solarized_light"-->
-                      <!--width="100%" height="200px"></CodeEditor>-->
+                    <code-editor
+                      ref="requestBodyRawDataEditor"
+                      :sync="isCodeEditorSync"
+                      :content="form.request.body.rawData"
+                      lang="javascript"
+                      theme="solarized_light"
+                      width="100%" height="200px"></code-editor>
                   </b-tab>
                   <b-tab title="README - md" class="p-0">
-                    <code-editor width="100%" height="200px"></code-editor>
-                    <!--<CodeEditor-->
-                      <!--ref="requestBodyRawDataMDEditor"-->
-                      <!--:sync="isCodeEditorSync"-->
-                      <!--:content="form.request.body.rawDataMD"-->
-                      <!--lang="markdown"-->
-                      <!--theme="chrome"-->
-                      <!--width="100%" height="200px"></CodeEditor>-->
+                    <code-editor
+                      ref="requestBodyRawDataMDEditor"
+                      :sync="isCodeEditorSync"
+                      :content="form.request.body.rawDataMD"
+                      lang="markdown"
+                      theme="chrome"
+                      width="100%" height="200px"></code-editor>
                   </b-tab>
                 </b-tabs>
                 <!-- raw end -->
@@ -128,14 +125,13 @@
           </b-card-header>
           <b-collapse id="response_body" role="tabpanel">
             <b-card-body class="p-0 m-0">
-              <code-editor width="100%" height="200px"></code-editor>
-              <!--<CodeEditor-->
-                <!--ref="responseBodyMDEditor"-->
-                <!--:sync="isCodeEditorSync"-->
-                <!--:content="form.response.bodyMD"-->
-                <!--lang="markdown"-->
-                <!--theme="chrome"-->
-                <!--width="100%" height="200px"></CodeEditor>-->
+              <code-editor
+                ref="responseBodyMDEditor"
+                :sync="isCodeEditorSync"
+                :content="form.response.bodyMD"
+                lang="markdown"
+                theme="chrome"
+                width="100%" height="200px"></code-editor>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -148,9 +144,8 @@
           </b-card-header>
           <b-collapse id="response_headers" role="tabpanel">
             <b-card-body class="p-0 m-0">
-              <!--<ParametersEditor-->
-                <!--:items="form.response.headers"-->
-                <!--@cell-edit-done="handleResponseHeadersCellEditDone"></ParametersEditor>-->
+              <parameters-editor
+                :items.sync="form.response.headers" ></parameters-editor>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -169,112 +164,103 @@
 </template>
 
 <script>
-  // import ParametersEditor from './ApiParametersEditor'
-  import ConstUtil from '~/utils/const'
-  import MixUtil from '~/utils/mix'
+import ParametersEditor from './ApiParametersEditor'
+import ConstUtil from '~/utils/const'
+import MixUtil from '~/utils/mix'
 
-  // ace editor
-  import CodeEditor from '~/components/AceCodeEditor'
+// ace editor
+import CodeEditor from '~/components/AceCodeEditor'
 
-  export default {
-    name: 'component-api-add',
-    components: {
-      // ParametersEditor,
-      CodeEditor
-    },
-    computed: {},
-    props: ['form'],
-    data() {
-      return {
-        methodOptions: ConstUtil.httpMethods(),
-        bodyTypeOptions: ConstUtil.httpBodyTypes(),
-        rawTypeOptions: ConstUtil.httpBodyRawTypes(),
-        isCodeEditorSync: true
-      }
-    },
-    methods: {
-
-      handleSave() {
-        // 更新编辑器data
-        this.form.request.body.rawData =
-          this.$refs.requestBodyRawDataEditor === undefined ? this.form.request.body.rawData : this.$refs.requestBodyRawDataEditor.getValue()
-        this.form.request.body.rawDataMD =
-          this.$refs.requestBodyRawDataMDEditor === undefined ? this.form.request.body.rawDataMD : this.$refs.requestBodyRawDataMDEditor.getValue()
-        this.form.response.body =
-          this.$refs.responseBodyEditor === undefined ? this.form.response.body : this.$refs.responseBodyEditor.getValue()
-        this.form.response.bodyMD =
-          this.$refs.responseBodyMDEditor === undefined ? this.form.response.bodyMD : this.$refs.responseBodyMDEditor.getValue()
-
-        this.$emit('api-save', {name: 'api-add', data: this.form})
-      },
-      handleClose() {
-        this.$emit('close')
-      },
-
-      // ---------------------------------------------------------------------------
-      // request - 参数 - 单元格编辑完成
-      handleParametersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.form.request.parameters[rowIndex][field] = newValue
-      },
-      // request - headers - 单元格编辑完成
-      handleHeadersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.form.request.headers[rowIndex][field] = newValue
-      },
-      // request - body raw - 单元格编辑完成
-      handleBodyRawKVCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.form.request.body.kvData[rowIndex][field] = newValue
-      },
-      // request - body raw - json 编辑器修改完成
-      handleRequestRawDataJsonChange(value) {
-        this.form.request.body.rawData = value
-      },
-      // response - headers - 单元格编辑完成
-      handleResponseHeadersCellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-        this.form.response.headers[rowIndex][field] = newValue
-      },
-      // json 格式化
-      handleFormatJson() {
-        this.form.request.body.rawData = MixUtil.formatJson(this.form.request.body.rawData)
-        this.form.response.body = MixUtil.formatJson(this.form.response.body)
-        this.form.request.body.rawDataMD = MixUtil.formatMarkdown(this.form.request.body.rawDataMD)
-        this.form.response.bodyMD = MixUtil.formatMarkdown(this.form.response.bodyMD)
-      }
-      // ---------------------------------------------------------------------------
-
-    },
-    // 挂载结束
-    mounted: function () {
+export default {
+  name: 'component-api-add',
+  components: {
+    ParametersEditor,
+    CodeEditor
+  },
+  computed: {},
+  props: ['form'],
+  data() {
+    return {
+      methodOptions: ConstUtil.httpMethods(),
+      bodyTypeOptions: ConstUtil.httpBodyTypes(),
+      rawTypeOptions: ConstUtil.httpBodyRawTypes(),
+      isCodeEditorSync: true
     }
-  }
+  },
+  methods: {
+    handleSave() {
+      // 更新编辑器data
+      this.form.request.body.rawData =
+        this.$refs.requestBodyRawDataEditor === undefined
+          ? this.form.request.body.rawData
+          : this.$refs.requestBodyRawDataEditor.getValue()
+      this.form.request.body.rawDataMD =
+        this.$refs.requestBodyRawDataMDEditor === undefined
+          ? this.form.request.body.rawDataMD
+          : this.$refs.requestBodyRawDataMDEditor.getValue()
+      this.form.response.body =
+        this.$refs.responseBodyEditor === undefined
+          ? this.form.response.body
+          : this.$refs.responseBodyEditor.getValue()
+      this.form.response.bodyMD =
+        this.$refs.responseBodyMDEditor === undefined
+          ? this.form.response.bodyMD
+          : this.$refs.responseBodyMDEditor.getValue()
+
+      this.$emit('api-save', {name: 'api-add', data: this.form})
+    },
+    handleClose() {
+      this.$emit('close')
+    },
+
+    // ---------------------------------------------------------------------------
+    // json 格式化
+    handleFormatJson() {
+      this.form.request.body.rawData = MixUtil.formatJson(
+        this.form.request.body.rawData
+      )
+      this.form.response.body = MixUtil.formatJson(this.form.response.body)
+      this.form.request.body.rawDataMD = MixUtil.formatMarkdown(
+        this.form.request.body.rawDataMD
+      )
+      this.form.response.bodyMD = MixUtil.formatMarkdown(
+        this.form.response.bodyMD
+      )
+    }
+    // ---------------------------------------------------------------------------
+  },
+  // 挂载结束
+  mounted: function() {}
+}
 </script>
 
 <style scoped>
-  /*.ace_editor {*/
-    /*font: 16px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;*/
-  /*}*/
+/*.ace_editor {*/
+/*font: 16px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;*/
+/*}*/
 
-  #apiAddView {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1021;
-    overflow: hidden;
-    /* width: 100%; */
-    /* height: 100%; */
-    padding: 0px;
-    margin: 0px;
-    background-color: #495060;
-  }
+#apiAddView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1021;
+  overflow: hidden;
+  /* width: 100%; */
+  /* height: 100%; */
+  padding: 0px;
+  margin: 0px;
+  background-color: #495060;
+}
 
-  .toolbar {
-    margin: 10px;
-    text-align: center;
-  }
+.toolbar {
+  margin: 10px;
+  text-align: center;
+}
 
-  .card-body {
-    padding: 2px;
-    margin: 0px;
-  }
+.card-body {
+  padding: 2px;
+  margin: 0px;
+}
 </style>

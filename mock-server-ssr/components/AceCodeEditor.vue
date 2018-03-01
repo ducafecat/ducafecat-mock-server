@@ -8,6 +8,7 @@
     ace = require('brace')
     require('brace/mode/javascript')
     require('brace/mode/markdown')
+    require('brace/theme/chrome')
     require('brace/theme/solarized_light')
   }
 
