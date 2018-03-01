@@ -119,7 +119,6 @@ module.exports = {
    ** Build configuration
    */
   build: {
-    vendor: ['axios'],
     /*
      ** Run ESLINT on save
      */
@@ -132,13 +131,7 @@ module.exports = {
           exclude: /(node_modules)/
         });
       }
-    },
-
-    modules: ['@nuxtjs/axios', '@nuxtjs/proxy'],
-    proxy: [['/api', {
-      target: 'https://www.easy-mock.com',
-      pathRewrite: { '^/api': '/mock/5a7bac516347684a0857e274/mserver' }
-    }]]
+    }
   }
 };
 

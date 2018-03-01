@@ -3,15 +3,21 @@ import Config from './config'
 import {getToken} from './auth'
 import store from '../store'
 
-const _errMesage = (message) => {
-  store.commit('SET_ALERT', {
-    variant: 'danger',
-    description: message
-  })
+let isClient = !process.server
+
+function _errMesage(message) {
+  if (isClient) {
+    $nuxt.$store.commit('SET_ALERT', {
+      variant: 'danger',
+      description: message
+    })
+  } else {
+    console.error(message)
+  }
 }
 
 let baseURL = Config.apiBaseURL
-if (process.server) {
+if (!isClient) {
   baseURL = Config.proxy.target
 }
 
@@ -22,7 +28,7 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
   const token = getToken()
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.Authorization = token
   }
   return config
 }, error => Promise.reject(error))
@@ -47,17 +53,18 @@ instance.interceptors.response.use((res) => {
   }
   return res
 }, (error) => {
+  debugger
   const res = error.response
   if (res) {
     if (res.status === 401) {
       store.dispatch('LogOut').then(() => {
         // router.push({path: '/login'})
       })
-    } else if (res.data && res.data.error) {
-      _errMesage(res.data.error)
+    } else if (isClient && res.data && res.data.error) {
+      _errMesage(`${res.status} - ${res.statusText}`)
     }
   }
-  Promise.reject(error)
+  return Promise.reject(error)
 })
 
 const createAPI = (url, method, config) => {

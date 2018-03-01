@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "backpack dev",
+    "dev-debug": "node --inspect node_modules/.bin/nuxt",
     "build": "nuxt build && backpack build",
     "start": "cross-env NODE_ENV=production node build/main.js",
     "precommit": "npm run lint",

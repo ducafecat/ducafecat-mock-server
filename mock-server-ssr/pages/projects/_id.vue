@@ -154,6 +154,12 @@ export default {
       this.fullscreen_component = 'apiAdd'
       this.isShowApiAddView = true
     },
+    handleShowApiEditFullView() {
+
+    },
+    handleApiDelete() {
+
+    },
     handleApiAddSave(data) {
       console.log(data)
       this.fullscreen_component = ''
@@ -218,12 +224,14 @@ export default {
     handleGroupAddSave() {
       this.$refs.modalRef.hide()
       group.create(this.group_item).then(res => {
+        this.reloadData()
         this.successAlert('分组添加成功.')
       })
     },
     handleGroupUpdateSave() {
       this.$refs.modalRef.hide()
       group.update(this.group_item).then(res => {
+        this.reloadData()
         this.successAlert('分组修改成功.')
       })
     },
