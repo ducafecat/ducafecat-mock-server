@@ -65,7 +65,11 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 13);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -134,6 +138,7 @@ module.exports = {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_koa_router__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_koa_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_koa_router__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_restc__ = __webpack_require__(12);
@@ -142,10 +147,25 @@ module.exports = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__middleware_mockFilter__ = __webpack_require__(7);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return mockRouter; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return apiRouter; });
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_koa_router__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_koa_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_koa_router__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_restc__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_restc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_restc__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_mock__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__middleware_mockFilter__ = __webpack_require__(13);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return mockRouter; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return apiRouter; });
 
 
 
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
 
+
+// import mock from './../controllers/mock'
+
+
+<<<<<<< HEAD
 
 var mockRouter = new __WEBPACK_IMPORTED_MODULE_0_koa_router___default.a({ prefix: '/mock' });
 var apiRouter = new __WEBPACK_IMPORTED_MODULE_0_koa_router___default.a({ prefix: '/api' });
@@ -170,6 +190,19 @@ apiRouter.all('/test', __WEBPACK_IMPORTED_MODULE_2__controllers_mock__["a" /* de
 // // router.all(/^\/api(\/|\/\w+)?$/, c2k(proxy(cfg.proxy)))
 
 // export default router
+=======
+var router = new __WEBPACK_IMPORTED_MODULE_0_koa_router___default.a();
+var mockRouter = new __WEBPACK_IMPORTED_MODULE_0_koa_router___default.a({ prefix: '/mock' });
+var apiRouter = new __WEBPACK_IMPORTED_MODULE_0_koa_router___default.a({ prefix: '/api' });
+
+// mock
+mockRouter.all('*', __WEBPACK_IMPORTED_MODULE_3__middleware_mockFilter__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1_restc___default.a.koa2(), __WEBPACK_IMPORTED_MODULE_2__controllers_mock__["a" /* default */].getMockAPI);
+
+// api
+apiRouter.all('/test', __WEBPACK_IMPORTED_MODULE_2__controllers_mock__["a" /* default */].getMockAPI);
+
+
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
 
 /***/ },
 /* 3 */
@@ -216,14 +249,40 @@ module.exports = require("nuxt");
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__);
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path_to_regexp__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path_to_regexp___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_path_to_regexp__);
+=======
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+var mock = {
+  getMockAPI: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
+      var html;
+      return __WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              html = "\n    <ul>\n      <li><a href=\"/page/helloworld\">/page/helloworld</a></li>\n      <li><a href=\"/page/404\">/page/404</a></li>\n    </ul>\n  ";
 
+              ctx.body = html;
 
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function getMockAPI(_x, _x2) {
+      return _ref.apply(this, arguments);
+    }
+
+<<<<<<< HEAD
 /* harmony default export */ exports["a"] = (function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
     var pathNode;
@@ -294,8 +353,19 @@ var mock = {
     return getMockAPI;
   }()
 };
+=======
+    return getMockAPI;
+  }()
+};
 
 /* harmony default export */ exports["a"] = mock;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
+
+module.exports = require("koa-router");
 
 /***/ },
 /* 9 */
@@ -307,6 +377,7 @@ module.exports = require("koa-router");
 /* 10 */
 /***/ function(module, exports) {
 
+<<<<<<< HEAD
 module.exports = require("path-to-regexp");
 
 /***/ },
@@ -323,6 +394,12 @@ module.exports = require("restc");
 
 /***/ },
 /* 13 */
+=======
+module.exports = require("restc");
+
+/***/ },
+/* 11 */
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -375,7 +452,10 @@ var start = function () {
           case 10:
 
             // 加载路由中间件
+<<<<<<< HEAD
             // app.use(router.routes()).use(router.allowedMethods())
+=======
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
             app.use(__WEBPACK_IMPORTED_MODULE_4__routers__["a" /* mockRouter */].routes()).use(__WEBPACK_IMPORTED_MODULE_4__routers__["a" /* mockRouter */].allowedMethods()).use(__WEBPACK_IMPORTED_MODULE_4__routers__["b" /* apiRouter */].routes()).use(__WEBPACK_IMPORTED_MODULE_4__routers__["b" /* apiRouter */].allowedMethods());
 
             // http status 404 改 200
@@ -440,6 +520,59 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 start();
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+module.exports = require("path-to-regexp");
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path_to_regexp__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path_to_regexp___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_path_to_regexp__);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+/* harmony default export */ exports["a"] = (function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
+    var pathNode;
+    return __WEBPACK_IMPORTED_MODULE_0__Users_hans_Documents_project_MockServer_mock_server_ssr_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            pathNode = __WEBPACK_IMPORTED_MODULE_1_path_to_regexp___default()('/mock/:projectId(.{24})/:mockURL*').exec(ctx.path);
+
+
+            if (!pathNode) ctx.throw(404);
+
+            ctx.pathNode = {
+              projectId: pathNode[1],
+              mockURL: '/' + (pathNode[2] || '')
+            };
+
+            return _context.abrupt('return', next());
+
+          case 4:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+})();
 
 /***/ }
 /******/ ]);

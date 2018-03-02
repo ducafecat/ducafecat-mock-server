@@ -23,7 +23,10 @@ async function start() {
   }
 
   // 加载路由中间件
+<<<<<<< HEAD
   // app.use(router.routes()).use(router.allowedMethods())
+=======
+>>>>>>> 3ffbd925c6749ab9cb009ed76cf24c3629f7283d
   app
     .use(mockRouter.routes())
     .use(mockRouter.allowedMethods())

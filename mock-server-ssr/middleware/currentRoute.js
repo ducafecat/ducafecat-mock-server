@@ -1,8 +1,8 @@
-export default function (context) {
+export default function (ctx, next) {
   // console.log(context.route)
-  let path = context.route.fullPath
-  if (context.route.matched.length) {
-    path = context.route.matched[0].path
+  let path = ctx.route.fullPath
+  if (ctx.route.matched.length) {
+    path = ctx.route.matched[0].path
   }
-  context.store.commit('SET_CURRENT_ROUTER', path)
+  ctx.store.commit('SET_CURRENT_ROUTER', path)
 }
