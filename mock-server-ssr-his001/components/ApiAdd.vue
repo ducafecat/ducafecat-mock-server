@@ -207,7 +207,7 @@ export default {
           ? this.form.response.bodyMD
           : this.$refs.responseBodyMDEditor.getValue()
 
-      this.$emit('api-save', {name: 'api-add', data: this.form})
+      this.$emit('api-save', this.form)
     },
     handleClose() {
       this.$emit('close')
