@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import {Nuxt, Builder} from 'nuxt'
 import proxy from 'koa-proxies'
-import router from './routers'
+import {mockRouter, apiRouter} from './routers'
 import cfg from './../utils/config'
 
 async function start() {
@@ -23,7 +23,12 @@ async function start() {
   }
 
   // 加载路由中间件
-  app.use(router.routes()).use(router.allowedMethods())
+  // app.use(router.routes()).use(router.allowedMethods())
+  app
+    .use(mockRouter.routes())
+    .use(mockRouter.allowedMethods())
+    .use(apiRouter.routes())
+    .use(apiRouter.allowedMethods())
 
   // http status 404 改 200
   app.use(async (ctx, next) => {
