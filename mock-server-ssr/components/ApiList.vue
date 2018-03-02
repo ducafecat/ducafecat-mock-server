@@ -27,9 +27,9 @@
           </template>
           <template slot="show_ops" slot-scope="row">
             <b-button-group size="sm" class="float-right">
-              <b-button title="预览" variant="link" @click="handleApiAdd"><span class="oi oi-eye"></span></b-button>
-              <b-button title="修改" variant="link" @click="handleApiEdit"><span class="oi oi-pencil"></span></b-button>
-              <b-button title="删除" variant="link" @click="handleApiDelete"><span class="oi oi-delete"></span></b-button>
+              <b-button title="预览" variant="link" @click="handleApiPreview(row.item.url)"><span class="oi oi-eye"></span></b-button>
+              <b-button title="修改" variant="link" @click="handleApiEdit(row.item.id)"><span class="oi oi-pencil"></span></b-button>
+              <b-button title="删除" variant="link" @click="handleApiDelete(row.item.id)"><span class="oi oi-delete"></span></b-button>
             </b-button-group>
           </template>
         </b-table>
@@ -101,11 +101,14 @@ export default {
     handleApiAdd(item) {
       this.$emit('api-add', item)
     },
-    handleApiEdit(item) {
-      this.$emit('api-edit', item)
+    handleApiPreview(url) {
+      this.$emit('api-preview', url)
     },
-    handleApiDelete(item) {
-      this.$emit('api-delete', item)
+    handleApiEdit(id) {
+      this.$emit('api-edit', id)
+    },
+    handleApiDelete(id) {
+      this.$emit('api-delete', id)
     }
   },
   // 挂载结束

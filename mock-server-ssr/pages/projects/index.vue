@@ -41,71 +41,72 @@
 </template>
 
 <script>
-  import pageMixin from '~/components/mixins/pageMixin'
-  import projectAdd from '~/components/ProjectAdd'
-  import MixUtil from '~/utils/mix'
-  import * as Api from '~/utils/api'
+import pageMixin from '~/components/mixins/pageMixin'
+import projectAdd from '~/components/ProjectAdd'
+import MixUtil from '~/utils/mix'
+import * as Api from '~/utils/api'
 
-  export default {
-    name: 'projects',
-    layout: 'dashboard',
-    mixins: [pageMixin],
-    components: {
-      projectAdd
-    },
-    data() {
-      return {
-        select_component: 'projectAdd',
-        items: [],
-        data_item: {}
-      }
-    },
-    methods: {
-      handleShowAddModal() {
-        this.data_item = {
-          'name': '',
-          'base_url': '',
-          'desc': ''
-        }
-        this.select_component = 'projectAdd'
-        this.$refs.modalRef.show()
-      },
-      handleAddSave() {
-        this.$refs.modalRef.hide()
-        Api.project.create(this.data_item).then(res => {
-          this.successAlert('项目添加成功.')
-        })
-      },
-      handleShowEditModal(data) {
-        this.data_item = data
-        this.select_component = 'projectAdd'
-        this.$refs.modalRef.show()
-      },
-      handleUpdateSave() {
-        this.$refs.modalRef.hide()
-        Api.project.update(this.data_item).then(res => {
-          this.successAlert('项目修改成功.')
-        })
-      },
-      handleDelete(pid) {
-        if (MixUtil.delConfirm(pid)) {
-          Api.project.delete({id: pid}).then(res => {
-            this.successAlert('项目删除成功.')
-          })
-        }
-      },
-      modalHidden() {
-        this.select_component = ''
-      }
-    },
-    // 挂载结束
-    mounted: function () {
-      Api.project.list().then(res => {
-        this.items = res.data
-      })
+export default {
+  name: 'projects',
+  layout: 'dashboard',
+  mixins: [pageMixin],
+  components: {
+    projectAdd
+  },
+  data() {
+    return {
+      select_component: 'projectAdd',
+      items: [],
+      data_item: {}
     }
+  },
+  methods: {
+    handleShowAddModal() {
+      this.data_item = {
+        name: '',
+        base_url: '',
+        desc: ''
+      }
+      this.select_component = 'projectAdd'
+      this.$refs.modalRef.show()
+    },
+    handleAddSave() {
+      this.$refs.modalRef.hide()
+      Api.project.create(this.data_item).then(res => {
+        this.successAlert('项目添加成功.')
+      })
+    },
+    handleShowEditModal(data) {
+      this.data_item = data
+      this.select_component = 'projectAdd'
+      this.$refs.modalRef.show()
+    },
+    handleUpdateSave() {
+      this.$refs.modalRef.hide()
+      Api.project.update(this.data_item).then(res => {
+        this.successAlert('项目修改成功.')
+      })
+    },
+    handleDelete(pid) {
+      if (MixUtil.delConfirm()) {
+        Api.project.delete({id: pid}).then(res => {
+          this.successAlert('项目删除成功.')
+        })
+      }
+    },
+    modalHidden() {
+      this.select_component = ''
+    }
+  },
+  // 挂载结束
+  mounted: function() {
+    Api.project.list().then(res => {
+      this.items = res.data
+    })
   }
+}
 </script>
 
 <style scoped>
+
 </style>

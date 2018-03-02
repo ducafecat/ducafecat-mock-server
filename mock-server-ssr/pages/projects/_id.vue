@@ -20,6 +20,7 @@
       :items="data_list" 
       @group-edit="handleShowGroupUpdateModal"
       @group-delete="handelGroupDelete"
+      @api-preview="handleApiPreview"
       @api-add="handleShowApiAddFullView"
       @api-edit="handleShowApiEditFullView"
       @api-delete="handleApiDelete"
@@ -44,7 +45,12 @@
     <!-- 添加 api/分组 end -->
 
     <!-- 添加 api接口 -->
-    <component v-show="isShowApiAddView" v-bind:is="fullscreen_component" :form="form" @api-save="handleApiAddSave" @close="handleApiAddClose"></component>
+    <component 
+      v-show="isShowApiAddView" 
+      v-bind:is="fullscreen_component" 
+      :form="form" 
+      @api-save="handleApiAddSave" 
+      @close="handleApiAddClose"></component>
     <!--<apiAdd v-show="isShowApiAddView" :form="form" @api-save="handleApiAddSave" @close="handleApiAddClose"></apiAdd>-->
     <!-- api信息 end -->
   </div>
@@ -54,7 +60,7 @@
 import axios from 'axios'
 import pageMixin from '~/components/mixins/pageMixin'
 import MixUtil from '~/utils/mix'
-import {project, group} from '~/utils/api'
+import {mock, project, group} from '~/utils/api'
 import apiAdd from '~/components/apiAdd'
 import apiGroupAdd from '~/components/apiGroupAdd'
 import apiList from '~/components/apiList'
@@ -121,7 +127,7 @@ export default {
     // 业务
     reloadData() {
       group.list({id: this.project_item.id}).then(res => {
-        this.project_item = res.data
+        this.data_list = res.data
       })
     },
 
@@ -157,48 +163,45 @@ export default {
       this.fullscreen_component = 'apiAdd'
       this.isShowApiAddView = true
     },
-    handleShowApiEditFullView(item) {},
-    handleApiDelete() {},
+    handleShowApiEditFullView(id) {
+      mock.info({id}).then(res => {
+        this.form = res.data
+        this.fullscreen_component = 'apiAdd'
+        this.isShowApiAddView = true
+      })
+    },
+    handleApiPreview(url) {
+      let urlString = `/mock/${this.project_item.id}/${this.project_item.base_url}/${url}`
+      console.log(urlString)
+    },
+    handleApiDelete(id) {
+      if (!MixUtil.delConfirm()) {
+        return
+      }
+      mock.delete({id}).then(res => {
+        this.reloadData()
+        this.successAlert('API删除成功.')
+      })
+    },
     handleApiAddSave(data) {
       console.log(data)
       this.fullscreen_component = ''
       this.isShowApiAddView = false
+      if (data.id === undefined) {
+        mock.create(data).then(res => {
+          this.reloadData()
+          this.successAlert('API添加成功.')
+        })
+      } else {
+        mock.update(data).then(res => {
+          this.reloadData()
+          this.successAlert('API修改成功.')
+        })
+      }
     },
     handleApiAddClose() {
       this.fullscreen_component = ''
       this.isShowApiAddView = false
-    },
-    handleShowApiAddModal2() {
-      this.modal_title = '接口信息'
-      this.modal_component = 'apiAdd'
-      this.form = {
-        // 输入
-        request: {
-          base: {
-            method: 'get',
-            url: '',
-            description: ''
-          },
-          parameters: [],
-          headers: [],
-          body: {
-            type: '1',
-            kvData: [],
-            rawType: '1',
-            rawData: '',
-            rawDataMD: ''
-          }
-        },
-        // 输出
-        response: {
-          body: '{"data":""}',
-          bodyMD: '',
-          mockjs: 0,
-          headers: []
-        }
-      }
-      this.form.response.body = MixUtil.formatJson(this.form.response.body)
-      this.$refs.modalRef.show()
     },
 
     // 分组
@@ -235,6 +238,9 @@ export default {
       })
     },
     handelGroupDelete(item, index) {
+      if (!MixUtil.delConfirm()) {
+        return
+      }
       group.delete(item).then(res => {
         this.reloadData()
         this.successAlert('分组删除成功.')
