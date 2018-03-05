@@ -181,8 +181,10 @@ export default {
     },
     handleApiPreview(item) {
       // 预览
-      let urlString = `/mock/${projectItem.id}/${projectItem.base_url}/${item.url}#!method=${item.method}`
-      location.href = urlString
+      let urlString = `/mock/${this.projectItem.id}/${
+        this.projectItem.base_url
+      }/${item.url}#!method=${item.method}`
+      window.open(urlString)
     },
     handleApiDelete(item) {
       // 删除
