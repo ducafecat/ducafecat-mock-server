@@ -59,42 +59,44 @@
 <script>
   import pageMixin from '~/components/mixins/pageMixin'
   import BSAlert from '~/components/BSAlert'
+  // import Spin from '~/components/public/Spin'
 
   export default {
     name: 'dashboard-layout',
     mixins: [pageMixin],
     components: {
       BSAlert
+      // Spin
     },
     data() {
       return {}
     },
     computed: {
       breadcrumb () {
-        let breadcrumb_list = []
-        let nodes_path = []
-        function parseNodes(nodes, find_id) {
+        let breadcrumbList = []
+        let nodesp = []
+        function parseNodes(nodes, findId) {
           for (let it of nodes) {
-            nodes_path.push(it)
+            nodesp.push(it)
             let isFind = false
-            if (find_id === it.path) {
+            if (findId === it.path) {
               isFind = true
             }
             if (it.childs !== undefined && it.childs.length > 0 && !isFind) {
-              isFind = parseNodes(it.childs, find_id)
+              isFind = parseNodes(it.childs, findId)
             } else {
             }
             if (isFind) {
-              for (let item of nodes_path) {
-                breadcrumb_list.push({
+              for (let item of nodesp) {
+                breadcrumbList.push({
                   text: item.name,
                   to: item.path
                 })
               }
-              nodes_path = []
+              nodesp = []
               return isFind
             }
-            nodes_path.pop()
+            nodesp.pop()
           }
         }
         if (this.currentRoute !== null) {
@@ -105,7 +107,7 @@
           //   }
           // }
         }
-        return breadcrumb_list
+        return breadcrumbList
       }
     },
     methods: {},

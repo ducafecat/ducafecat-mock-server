@@ -44,7 +44,7 @@
   import pageMixin from '~/components/mixins/pageMixin'
   import projectAdd from '~/components/ProjectAdd'
   import MixUtil from '~/utils/mix'
-  import * as Api from '~/utils/api'
+  import {project} from '~/utils/api'
 
   export default {
     name: 'projects',
@@ -72,7 +72,7 @@
       },
       handleAddSave() {
         this.$refs.modalRef.hide()
-        Api.project.create(this.data_item).then(res => {
+        project.create(this.data_item).then(res => {
           this.successAlert('项目添加成功.')
         })
       },
@@ -83,13 +83,13 @@
       },
       handleUpdateSave() {
         this.$refs.modalRef.hide()
-        Api.project.update(this.data_item).then(res => {
+        project.update(this.data_item).then(res => {
           this.successAlert('项目修改成功.')
         })
       },
       handleDelete(pid) {
         if (MixUtil.delConfirm(pid)) {
-          Api.project.delete({id: pid}).then(res => {
+          project.delete({id: pid}).then(res => {
             this.successAlert('项目删除成功.')
           })
         }
@@ -100,7 +100,7 @@
     },
     // 挂载结束
     mounted: function () {
-      Api.project.list().then(res => {
+      project.list().then(res => {
         this.items = res.data
       })
     }

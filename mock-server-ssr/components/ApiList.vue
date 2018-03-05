@@ -27,7 +27,7 @@
           </template>
           <template slot="show_ops" slot-scope="row">
             <b-button-group size="sm" class="float-right">
-              <b-button title="预览" variant="link" @click="handleApiAdd"><span class="oi oi-eye"></span></b-button>
+              <b-button title="预览" variant="link" @click="handleApiPreview"><span class="oi oi-eye"></span></b-button>
               <b-button title="修改" variant="link" @click="handleApiEdit"><span class="oi oi-pencil"></span></b-button>
               <b-button title="删除" variant="link" @click="handleApiDelete"><span class="oi oi-delete"></span></b-button>
             </b-button-group>
@@ -100,6 +100,9 @@ export default {
     //   api
     handleApiAdd(item) {
       this.$emit('api-add', item)
+    },
+    handleApiPreview(item) {
+      this.$emit('api-preview', item)
     },
     handleApiEdit(item) {
       this.$emit('api-edit', item)
