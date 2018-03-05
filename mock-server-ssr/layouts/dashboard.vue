@@ -45,11 +45,11 @@
       <b-breadcrumb :items="breadcrumb" />
       <!-- 面包靴 end -->
       <!-- alert -->
-      <BSAlert
+      <Alert
         v-if="alertDescription !== ''"
         :variant="alertVariant"
         :description="alertDescription"
-        @dismissed-done="clearAlert"></BSAlert>
+        @dismissed-done="clearAlert"></Alert>
       <!-- alert end -->
       <nuxt/>
     </main>
@@ -58,14 +58,14 @@
 
 <script>
   import pageMixin from '~/components/mixins/pageMixin'
-  import BSAlert from '~/components/BSAlert'
+  import Alert from '~/components/public/Alert'
   // import Spin from '~/components/public/Spin'
 
   export default {
     name: 'dashboard-layout',
     mixins: [pageMixin],
     components: {
-      BSAlert
+      Alert
       // Spin
     },
     data() {

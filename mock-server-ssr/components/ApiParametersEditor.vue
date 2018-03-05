@@ -1,6 +1,6 @@
 <template>
   <div>
-    <bs-edit-table :items="tableData" :columns="form.columns" @cell-edit-done="handleCellEditDone"></bs-edit-table>
+    <edit-table :items="tableData" :columns="form.columns" @cell-edit-done="handleCellEditDone"></edit-table>
     <b-button-group size="sm" class="float-right">
       <b-button @click="handleAdd">add</b-button>
       <b-button @click="handleDelete">delete</b-button>
@@ -8,12 +8,12 @@
   </div>
 </template>
 <script>
-import BsEditTable from '~/components/BSEditTable'
+import EditTable from '~/components/public/EditTable'
 
 export default {
   name: 'component-parameters-editor',
   components: {
-    BsEditTable
+    EditTable
   },
   props: ['items'],
   watch: {

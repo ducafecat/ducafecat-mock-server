@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    name: 'component-bs-alert',
+    name: 'component-alert',
     props: ['variant', 'description'],
     computed: {},
     data() {
