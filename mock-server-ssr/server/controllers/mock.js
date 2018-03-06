@@ -1,3 +1,10 @@
+/*
+ * @Author: hans.taozhiwei 
+ * @Date: 2018-03-06 14:19:33 
+ * @Last Modified by:   hans.taozhiwei 
+ * @Last Modified time: 2018-03-06 14:19:33 
+ */
+
 const mock = {
   async getMockAPI(ctx, next) {
     let html = `

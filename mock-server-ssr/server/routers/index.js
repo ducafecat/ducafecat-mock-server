@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 import restc from 'restc'
-import mock from './../controllers/mock'
-import mockFilter from './../../middleware/mockFilter'
+import {user, mock} from './../controllers'
+import utilFun from './../../middleware/utilFun'
 
 // import mock from './../controllers/mock'
 
@@ -9,14 +9,10 @@ import mockFilter from './../../middleware/mockFilter'
 // import proxy from 'http-proxy-middleware'
 // import cfg from './../../utils/config'
 
-let router = new Router()
 let mockRouter = new Router({prefix: '/mock'})
+  .all('*', utilFun.mockFilter, restc.koa2(), mock.getMockAPI)
+
 let apiRouter = new Router({prefix: '/api'})
-
-// mock
-mockRouter.all('*', mockFilter, restc.koa2(), mock.getMockAPI)
-
-// api
-apiRouter.all('/test', mock.getMockAPI)
+  .get('/u/register', user.register)
 
 export {mockRouter, apiRouter}

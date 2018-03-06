@@ -1,8 +1,11 @@
 import Koa from 'koa'
 import {Nuxt, Builder} from 'nuxt'
 import proxy from 'koa-proxies'
+import koaBody from 'koa-body'
+
 import {mockRouter, apiRouter} from './routers'
 import cfg from './../utils/config'
+import UtilFunMiddleware from './../middleware/utilFun'
 
 async function start() {
   const app = new Koa()
@@ -22,9 +25,10 @@ async function start() {
     await builder.build()
   }
 
-  // 加载路由中间件
-  // app.use(router.routes()).use(router.allowedMethods())
+  // 中间件
   app
+    .use(UtilFunMiddleware.util)
+    .use(koaBody({ multipart: true }))
     .use(mockRouter.routes())
     .use(mockRouter.allowedMethods())
     .use(apiRouter.routes())
@@ -45,7 +49,7 @@ async function start() {
   })
 
   // 代理
-  app.use(proxy(/^\/api\//, cfg.proxy))
+  // app.use(proxy(/^\/api\//, cfg.proxy))
 
   app.listen(port, host)
   console.log('Server listening on ' + host + ':' + port) // eslint-disable-line no-console
