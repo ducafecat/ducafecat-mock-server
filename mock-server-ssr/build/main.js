@@ -182,7 +182,7 @@ var UtilFunMiddleware = function () {
     logs: true
   },
   server: {
-    mongodb: 'mongodb://localhost/mock-server',
+    mongodb: 'mongodb://hans:123@localhost/mock-server',
     jwt: {
       expire: '14 days',
       secret: 'shared-secret'
