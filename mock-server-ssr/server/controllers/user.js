@@ -2,7 +2,7 @@
  * @Author: hans.taozhiwei 
  * @Date: 2018-03-06 13:40:55 
  * @Last Modified by: hans.taozhiwei
- * @Last Modified time: 2018-03-07 14:26:32
+ * @Last Modified time: 2018-03-07 17:17:42
  */
 import _ from 'lodash'
 import jwt from 'jsonwebtoken'
@@ -76,9 +76,36 @@ export default class UserController {
       return
     }
 
-    user.token = jwt.sign({id: user.id}, config.server.jwtSecret, {
+    user.token = jwt.sign({uid: user._id}, config.server.jwtSecret, {
       expiresIn: config.server.jwtExpire
     })
+
+    ctx.body = ctx.util.resuccess(_.pick(user, ft.user))
+  }
+
+  /**
+   * 离线 用户信息
+   *
+   * @static
+   * @param {any} ctx
+   * @memberof UserController
+   */
+  static async profile(ctx) {
+    // const token = ctx
+    //   .checkHeaders('Authorization')
+    //   .notEmpty()
+    //   .value.replace('Bearer ', '')
+
+    // if (ctx._validationErrors.length) {
+    //   ctx.body = ctx.util.refail(null, 10001, ctx._validationErrors)
+    //   return
+    // }
+
+    const user = await UserProxy.getById(ctx.state.user.uid)
+    if (!user) {
+      ctx.body = ctx.util.refail('用户不存在')
+      return
+    }
 
     ctx.body = ctx.util.resuccess(_.pick(user, ft.user))
   }

@@ -5,12 +5,18 @@ import koaBody from 'koa-body'
 // import restc from 'restc'
 import validator from 'koa2-validator'
 import onerror from 'koa-onerror'
+import koaJwt from 'koa-jwt'
+import cors from '@koa/cors'
+import pathToRegexp from 'path-to-regexp'
 
 import {mockRouter, apiRouter} from './routers'
 import cfg from './../utils/config'
 import UtilFunMiddleware from './../middleware/utilFun'
+import logger from './../utils/logger'
 
 async function start() {
+  console.log(`process.env.NODE_ENV => ${process.env.NODE_ENV}`)
+  
   const app = new Koa()
   const host = process.env.HOST || '127.0.0.1'
   const port = process.env.PORT || 3000
@@ -35,7 +41,18 @@ async function start() {
   app
     .use(validator())
     // .use(restc.koa2())
+    .use(logger)
     .use(UtilFunMiddleware.util)
+    .use(cors({ credentials: true, maxAge: 2592000 }))
+    .use(koaJwt({ secret: cfg.server.jwtSecret }).unless((ctx) => {
+      if (/^\/api/.test(ctx.path)) {
+        return pathToRegexp([
+          '/api/u/login',
+          '/api/u/register'
+        ]).test(ctx.path)
+      }
+      return true
+    }))
     .use(koaBody({multipart: true}))
     .use(mockRouter.routes())
     .use(mockRouter.allowedMethods())

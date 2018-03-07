@@ -15,5 +15,6 @@ let mockRouter = new Router({prefix: '/mock'})
 let apiRouter = new Router({prefix: '/api'})
   .post('/u/login', user.login)
   .post('/u/register', user.register)
+  .get('/u/profile', user.profile)
 
 export {mockRouter, apiRouter}
