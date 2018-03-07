@@ -2,6 +2,9 @@ import Koa from 'koa'
 import {Nuxt, Builder} from 'nuxt'
 import proxy from 'koa-proxies'
 import koaBody from 'koa-body'
+// import restc from 'restc'
+import validator from 'koa2-validator'
+import onerror from 'koa-onerror'
 
 import {mockRouter, apiRouter} from './routers'
 import cfg from './../utils/config'
@@ -25,10 +28,15 @@ async function start() {
     await builder.build()
   }
 
+  onerror(app)
+  // validator(app)
+
   // 中间件
   app
+    .use(validator())
+    // .use(restc.koa2())
     .use(UtilFunMiddleware.util)
-    .use(koaBody({ multipart: true }))
+    .use(koaBody({multipart: true}))
     .use(mockRouter.routes())
     .use(mockRouter.allowedMethods())
     .use(apiRouter.routes())
@@ -49,7 +57,12 @@ async function start() {
   })
 
   // 代理
-  // app.use(proxy(/^\/api\//, cfg.proxy))
+  // app.use(proxy(/^\/api\//, {
+  //     target: 'https://www.easy-mock.com/mock/5a7bac516347684a0857e274/mserver',
+  //     changeOrigin: true,
+  //     rewrite: path => path.replace('/api', ''),
+  //     logs: true
+  //   }))
 
   app.listen(port, host)
   console.log('Server listening on ' + host + ':' + port) // eslint-disable-line no-console

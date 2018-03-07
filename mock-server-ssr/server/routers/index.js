@@ -10,9 +10,10 @@ import utilFun from './../../middleware/utilFun'
 // import cfg from './../../utils/config'
 
 let mockRouter = new Router({prefix: '/mock'})
-  .all('*', utilFun.mockFilter, restc.koa2(), mock.getMockAPI)
+  // .all('*', utilFun.mockFilter, restc.koa2(), mock.getMockAPI)
 
 let apiRouter = new Router({prefix: '/api'})
-  .get('/u/register', user.register)
+  .post('/u/login', user.login)
+  .post('/u/register', user.register)
 
 export {mockRouter, apiRouter}
