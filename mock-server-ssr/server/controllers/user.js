@@ -2,7 +2,7 @@
  * @Author: hans.taozhiwei 
  * @Date: 2018-03-06 13:40:55 
  * @Last Modified by: hans.taozhiwei
- * @Last Modified time: 2018-03-07 17:51:52
+ * @Last Modified time: 2018-03-09 15:20:04
  */
 import _ from 'lodash'
 import jwt from 'jsonwebtoken'
@@ -36,7 +36,7 @@ export default class UserController {
       .notEmpty()
       .len(6, 20).value
 
-    if (ctx._validationErrors.length) {
+      if (ctx._validationErrors.length) {
       ctx.body = ctx.util.refail(null, 10001, ctx._validationErrors)
       return
     }

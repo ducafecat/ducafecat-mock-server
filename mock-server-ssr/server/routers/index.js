@@ -1,6 +1,6 @@
 import Router from 'koa-router'
 import restc from 'restc'
-import {user, mock} from './../controllers'
+import {user, mock, project} from './../controllers'
 import utilFun from './../../middleware/utilFun'
 
 // import mock from './../controllers/mock'
@@ -16,5 +16,10 @@ let apiRouter = new Router({prefix: '/api'})
   .post('/u/login', user.login)
   .post('/u/register', user.register)
   .get('/u/profile', user.profile)
+  .get('/project', project.list)
+  .post('/project', project.create)
+  .put('/project/:id', project.update)
+  .delete('/project/:id', project.delete)
+  .get('/project/:id', project.detail)
 
 export {mockRouter, apiRouter}
